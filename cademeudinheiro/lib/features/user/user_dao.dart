@@ -8,5 +8,5 @@ class UserDao extends BaseDao<UserModel> {
   }
 
   @override
-  String get tableName => "Users";
+  String get tableName => "users";
 }

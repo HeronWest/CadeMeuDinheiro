@@ -5,8 +5,8 @@ class UserModel extends Entity{
   int? id;
   String? name;
   String? email;
-  String? sald;
-  String? minim;
+  double? sald;
+  double? minim;
 
 //<editor-fold desc="Data Methods">
 
@@ -52,8 +52,8 @@ class UserModel extends Entity{
     int? id,
     String? name,
     String? email,
-    String? sald,
-    String? minim,
+    double? sald,
+    double? minim,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -78,9 +78,9 @@ class UserModel extends Entity{
     return UserModel(
       id: json['id'] as int,
       name: json['name'] as String,
-      minim: json['minim'] as String,
+      minim: json['minim'] as double,
       email: json['email'] as String,
-      sald: json['sald'] as String,
+      sald: json['sald'] as double,
     );
   }
 
