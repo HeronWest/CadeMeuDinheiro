@@ -1,7 +1,9 @@
 import 'package:cademeudinheiro/features/home/appbar.dart';
 import 'package:cademeudinheiro/features/home/drawer.dart';
 import 'package:cademeudinheiro/features/login_page/login_page.dart';
+import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +13,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _nameState extends State<HomePage> {
+  late UserStore _userStore = UserStore();
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _userStore = Provider.of<UserStore>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -43,17 +53,18 @@ class _nameState extends State<HomePage> {
                     children: [
                       Container(
                           width: screenSize.width * 0.85,
-                          margin: EdgeInsets.only(top: 5),
-                          child: Center(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: const Center(
                             child: Text('SALDO / MÍNIMO',
                                 style: TextStyle(color: Colors.black54)),
                           )),
                       Container(
                           width: screenSize.width * 0.85,
-                          margin: EdgeInsets.only(top: 2),
+                          margin: const EdgeInsets.only(top: 2),
                           child: Center(
-                            child: Text('R\$2750 / R\$500',
-                                style: TextStyle(
+                            child: Text(
+                                'R\$${_userStore.sald} / R\$${_userStore.minim}',
+                                style: const TextStyle(
                                   fontSize: 20,
                                   color: Color.fromARGB(
                                     255,
@@ -69,13 +80,13 @@ class _nameState extends State<HomePage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               width: screenSize.width * 0.85,
               height: screenSize.height * 0.35,
               color: Colors.blue,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

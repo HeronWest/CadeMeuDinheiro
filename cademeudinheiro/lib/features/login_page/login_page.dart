@@ -1,26 +1,40 @@
-import 'dart:convert';
-
 import 'package:cademeudinheiro/features/login_page/log_user.dart';
+import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
-  final name = TextEditingController();
-  final passwd = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  UserInfo _userInfo = UserInfo();
+  late UserStore _userStore;
+  final _name = TextEditingController();
+  final _passwd = TextEditingController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userStore = Provider.of<UserStore>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    final String _porlIcon = 'assets/images/porkIcon.svg';
-    
+    const String _porkIcon = 'assets/images/porkIcon.svg';
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             SvgPicture.asset(
-              _porlIcon,
+              _porkIcon,
               color: Color.fromARGB(255, 0, 194, 184),
               width: screenSize.width * 0.16,
               height: screenSize.height * 0.16,
@@ -30,7 +44,7 @@ class LoginPage extends StatelessWidget {
               width: screenSize.width * 0.8,
               height: screenSize.height * 0.09,
               child: TextFormField(
-                controller: name,
+                controller: _name,
                 style: const TextStyle(color: Color.fromARGB(255, 0, 194, 184)),
                 decoration: const InputDecoration(
                     labelText: 'Usuário',
@@ -50,7 +64,7 @@ class LoginPage extends StatelessWidget {
               width: screenSize.width * 0.8,
               height: screenSize.height * 0.09,
               child: TextFormField(
-                controller: passwd,
+                controller: _passwd,
                 style: const TextStyle(color: Color.fromARGB(255, 0, 194, 184)),
                 decoration: const InputDecoration(
                     labelText: 'Senha',
@@ -67,31 +81,63 @@ class LoginPage extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
+              width: screenSize.width * 0.8,
+              height: screenSize.height * 0.06,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                         Color.fromARGB(255, 0, 194, 184))),
                 onPressed: (() async {
-                  await conectUser(name.text, passwd.text, context);
-                  name.text = '';
-                  passwd.text = '';
+                  _userInfo = await conectUser(_name.text, _passwd.text);
+                  if (_userInfo.logged == false) {
+                    return showDialog<void>(
+                        context: context,
+                        barrierDismissible: false, // user must tap button!
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Erro'),
+                            content: SingleChildScrollView(
+                              child: ListBody(
+                                children: const <Widget>[
+                                  Text(
+                                      'Login ou Senha incorretos\nFavor verifique suas informações'),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('OK!'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    _userStore.setName(_userInfo.userName!);
+                    _userStore.setEmail(_userInfo.userEmail!);
+                    _userStore.setSald(_userInfo.userSald!);
+                    _userStore.setMinim(_userInfo.userMinim!);
+                    Navigator.pushReplacementNamed(context, '/home_page');
+                  }
+                  _name.text = '';
+                  _passwd.text = '';
                 }),
-                child: Text(
+                child: const Text(
                   'LOGIN',
                   style: TextStyle(color: Colors.white),
                 ),
-              ),
-              width: screenSize.width * 0.8,
-              height: screenSize.height * 0.06,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
               ),
             ),
             TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/cad_page');
                 },
-                child: Text(
+                child: const Text(
                   'Novo por aqui? Faça seu cadastro!',
                   style: TextStyle(),
                 ))

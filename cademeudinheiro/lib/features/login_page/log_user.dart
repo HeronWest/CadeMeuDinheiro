@@ -1,83 +1,36 @@
+import 'dart:developer';
+
 import 'package:cademeudinheiro/features/user/user_dao.dart';
+import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_model.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 //Faz a conexão com o usuário e se estiver tudo certo armazena as informações dele no store
-Future conectUser(String name, String passwd, BuildContext context) async {
-  UserModel? user;
+Future conectUser(String name, String passwd) async {
+  UserInfo _userInfo = UserInfo();
+  UserModel? _user;
   UserDao _userDao = UserDao();
   List<dynamic> consult = await _userDao.searchUser(name);
-  late UserStore userStore;
 
   if (consult.isNotEmpty) {
     List<UserModel> users = consult.cast<UserModel>();
-    user = users.first;
+    _user = users.first;
 
-    if (user.passwd == passwd) {
-      Navigator.pushReplacementNamed(context, '/home_page');
-      @override
-      void didChangeDependencies() {
-        
-        userStore = Provider.of<UserStore>(context);
-      }
-
-      userStore.setName(user.name!);
-      userStore.setEmail(user.email!);
-      userStore.setMinim(user.minim!);
-      userStore.setSald(user.sald!);
+    if (_user.passwd == passwd) {
+      _userInfo.logged = true;
+      _userInfo.userName = _user.name!;
+      _userInfo.userEmail = _user.email!;
+      _userInfo.userMinim = _user.minim!;
+      _userInfo.userSald = _user.sald!;
+      return _userInfo;
     } else {
-      return showDialog<void>(
-          context: context,
-          barrierDismissible: false, // user must tap button!
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Erro'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: const <Widget>[
-                    Text(
-                        'Login ou Senha incorretos\nFavor verifique suas informações'),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('OK!'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
+      _userInfo.logged = false;
+      return _userInfo;
     }
   } else {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Erro'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text(
-                      'Login ou Senha incorretos\nFavor verifique suas informações'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK!'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
+    _userInfo.logged = false;
+    return _userInfo;
   }
 }
