@@ -9,4 +9,10 @@ class UserDao extends BaseDao<UserModel> {
 
   @override
   String get tableName => "users";
+  Future<dynamic> searchUser(name) async {
+    List<UserModel> user =
+        await query("SELECT * FROM users WHERE name = '$name'");
+
+    return user;
+  }
 }

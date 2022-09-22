@@ -25,28 +25,29 @@ class DatabaseHelper {
     String path = join(databasesPath, 'BANCO.db');
     print("db $path");
 
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
+    var db = await openDatabase(path,
+        version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return db;
   }
 
   void _onCreate(Database db, int newVersion) async {
-
-    String s = await rootBundle.loadString("assets/sql/create.sql");
+    String s = await rootBundle.loadString("assets/sql/CREATE.sql");
 
     List<String> sqls = s.split(";");
 
-    for(String sql in sqls) {
-      if(sql.trim().isNotEmpty) {
+    for (String sql in sqls) {
+      if (sql.trim().isNotEmpty) {
         print("sql: $sql");
         await db.execute(sql);
       }
     }
   }
 
-  Future<FutureOr<void>> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+  Future<FutureOr<void>> _onUpgrade(
+      Database db, int oldVersion, int newVersion) async {
     print("_onUpgrade: oldVersion: $oldVersion > newVersion: $newVersion");
 
-    if(oldVersion == 1 && newVersion == 2) {
+    if (oldVersion == 1 && newVersion == 2) {
       await db.execute("alter table produto add column NOVA TEXT");
     }
   }

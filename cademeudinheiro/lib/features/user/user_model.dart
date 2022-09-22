@@ -1,9 +1,10 @@
 import 'dart:convert';
 import '../../helper/sql/entity.dart';
 
-class UserModel extends Entity{
+class UserModel extends Entity {
   int? id;
   String? name;
+  String? passwd;
   String? email;
   double? sald;
   double? minim;
@@ -16,6 +17,7 @@ class UserModel extends Entity{
     this.email,
     this.sald,
     this.minim,
+    this.passwd
   });
 
   @override
@@ -27,6 +29,7 @@ class UserModel extends Entity{
           name == other.name &&
           minim == other.minim &&
           email == other.email &&
+          passwd == other.passwd &&
           sald == other.sald);
 
   @override
@@ -35,13 +38,15 @@ class UserModel extends Entity{
       name.hashCode ^
       minim.hashCode ^
       email.hashCode ^
+      passwd.hashCode ^
       sald.hashCode;
 
   @override
   String toString() {
     return 'UserModel{' +
         ' id: $id,' +
-        ' nome: $name,' +
+        ' name: $name,' +
+        ' passwd $passwd'
         ' email: $email,' +
         ' sald: $sald,' +
         ' minim: $minim,' +
@@ -51,6 +56,7 @@ class UserModel extends Entity{
   UserModel copyWith({
     int? id,
     String? name,
+    String? passwd,
     String? email,
     double? sald,
     double? minim,
@@ -61,6 +67,7 @@ class UserModel extends Entity{
       email: email ?? this.email,
       sald: sald ?? this.sald,
       minim: minim ?? this.minim,
+      passwd: passwd ?? this.passwd
     );
   }
 
@@ -71,6 +78,7 @@ class UserModel extends Entity{
       'minim': this.minim,
       'email': this.email,
       'sald': this.sald,
+      'passwd' : this.passwd
     };
   }
 
@@ -81,6 +89,7 @@ class UserModel extends Entity{
       minim: json['minim'] as double,
       email: json['email'] as String,
       sald: json['sald'] as double,
+      passwd: json['passwd'] as String,
     );
   }
 
