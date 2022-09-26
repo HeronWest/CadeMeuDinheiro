@@ -5,10 +5,19 @@ class UserStore = _User with _$UserStore;
 
 abstract class _User with Store {
   @observable
+  int? ID;
+
+  @observable
   String name = '';
 
   @observable
+  String nick = '';
+
+  @observable
   String email = '';
+
+  @observable
+  String passwd = '';
 
   @observable
   double? sald;
@@ -17,7 +26,10 @@ abstract class _User with Store {
   double? minim;
 
   @action
-  setName(String value) => name = value;
+  setID(int value) => ID = value;
+
+  @action
+  setNick(String value) => nick = value;
 
   @action
   setEmail(String value) => email = value;
@@ -27,4 +39,7 @@ abstract class _User with Store {
 
   @action
   setMinim(double value) => minim = value;
+
+  @action
+  setPasswd(String value) => passwd = value;
 }

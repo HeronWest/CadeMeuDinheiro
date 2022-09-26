@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
         initialRoute: Routes.initial,
         routes: Routes.routes,
         theme: ThemeData(
+            sliderTheme:
+                SliderThemeData(showValueIndicator: ShowValueIndicator.always),
             useMaterial3: true,
             primaryColor: Color.fromARGB(255, 0, 194, 184),
             fontFamily: 'Roboto'),

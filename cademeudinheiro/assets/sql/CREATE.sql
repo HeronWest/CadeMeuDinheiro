@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS users(
     id              INTEGER PRIMARY KEY autoincrement,
+    nick            TEXT,
     name            TEXT,
     passwd          TEXT,
     email           TEXT,
@@ -8,7 +9,6 @@ CREATE TABLE IF NOT EXISTS users(
 );
 CREATE TABLE IF NOT EXISTS moviments(
     id              INTEGER PRIMARY KEY autoincrement,
-    userID          INTEGER,
     data            TEXT,
     sald            REAL,
     descri          TEXT,

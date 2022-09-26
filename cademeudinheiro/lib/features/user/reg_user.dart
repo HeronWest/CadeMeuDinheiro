@@ -1,11 +1,9 @@
 import 'package:cademeudinheiro/features/user/user_dao.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../user/user_model.dart';
+import 'user_model.dart';
 
 Future registerUser(
-    String name, email, passdw, rpasswd, BuildContext context) async {
+    String name, nick, email, passdw, rpasswd, BuildContext context) async {
   UserDao _userDao = UserDao();
   UserModel? user;
 
@@ -23,7 +21,7 @@ Future registerUser(
           return AlertDialog(
             title: const Text('Erro'),
             content: SingleChildScrollView(
-                child: ListBody(children: <Widget>[
+                child: ListBody(children: const <Widget>[
               Text('Usuário já existente/cadastrado!')
             ])),
             actions: [
@@ -45,7 +43,7 @@ Future registerUser(
               title: const Text('Erro'),
               content: SingleChildScrollView(
                   child: ListBody(
-                      children: <Widget>[Text('Suas senhas não coincidem')])),
+                      children: const <Widget>[Text('Suas senhas não coincidem')])),
               actions: [
                 TextButton(
                     onPressed: (() {
@@ -58,6 +56,7 @@ Future registerUser(
     } else {
       UserModel newUser = UserModel()
         ..name = name
+        ..nick = nick
         ..email = email
         ..passwd = passdw
         ..minim = 0
@@ -71,7 +70,7 @@ Future registerUser(
               title: const Text('Só sucesso'),
               content: SingleChildScrollView(
                   child: ListBody(
-                      children: <Widget>[Text('Cadastro feito com êxito!')])),
+                      children: const <Widget>[Text('Cadastro feito com êxito!')])),
               actions: [
                 TextButton(
                     onPressed: (() {

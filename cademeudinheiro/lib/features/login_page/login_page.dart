@@ -118,10 +118,12 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         });
                   } else {
-                    _userStore.setName(_userInfo.userName!);
+                    _userStore.setID(_userInfo.userId!);
+                    _userStore.setNick(_userInfo.userNick!);
                     _userStore.setEmail(_userInfo.userEmail!);
                     _userStore.setSald(_userInfo.userSald!);
                     _userStore.setMinim(_userInfo.userMinim!);
+                    _userStore.setPasswd(_userInfo.userPasswd!);
                     Navigator.pushReplacementNamed(context, '/home_page');
                   }
                   _name.text = '';

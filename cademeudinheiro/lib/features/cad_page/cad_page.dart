@@ -1,4 +1,4 @@
-import 'package:cademeudinheiro/features/cad_page/reg_user.dart';
+import 'package:cademeudinheiro/features/user/reg_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,6 +10,7 @@ class CadPage extends StatefulWidget {
 }
 
 final TextEditingController _nameController = TextEditingController();
+final TextEditingController _nickController = TextEditingController();
 final TextEditingController _emailController = TextEditingController();
 final TextEditingController _passwdController = TextEditingController();
 final TextEditingController _rpsswdController = TextEditingController();
@@ -46,6 +47,31 @@ class _CadPageState extends State<CadPage> {
                     ),
                     labelText: 'Usuário',
                     hintText: 'Digite seu usuário',
+                    labelStyle: TextStyle(
+                        fontSize: 14, color: Color.fromARGB(255, 0, 194, 184)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 0, 194, 184))),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 0, 194, 184)))),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              width: screenSize.width * 0.8,
+              height: screenSize.height * 0.08,
+              child: TextFormField(
+                controller: _nickController,
+                style: const TextStyle(color: Color.fromARGB(255, 0, 194, 184)),
+                decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: _nickController.clear,
+                      icon: const Icon(Icons.cancel_outlined),
+                      color: Colors.black45,
+                    ),
+                    labelText: 'Apelido',
+                    hintText: 'Digite seu apelido',
                     labelStyle: TextStyle(
                         fontSize: 14, color: Color.fromARGB(255, 0, 194, 184)),
                     enabledBorder: OutlineInputBorder(
@@ -133,6 +159,11 @@ class _CadPageState extends State<CadPage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
+              width: screenSize.width * 0.8,
+              height: screenSize.height * 0.06,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
@@ -140,24 +171,21 @@ class _CadPageState extends State<CadPage> {
                 onPressed: (() async {
                   await registerUser(
                       _nameController.text,
+                      _nickController.text,
                       _emailController.text,
                       _passwdController.text,
                       _rpsswdController.text,
                       context);
+                  _nickController.text = '';
                   _nameController.text = '';
                   _emailController.text = '';
                   _passwdController.text = '';
                   _rpsswdController.text = '';
                 }),
-                child: Text(
+                child: const Text(
                   'CADASTRAR',
                   style: TextStyle(color: Colors.white),
                 ),
-              ),
-              width: screenSize.width * 0.8,
-              height: screenSize.height * 0.06,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
               ),
             ),
           ]),

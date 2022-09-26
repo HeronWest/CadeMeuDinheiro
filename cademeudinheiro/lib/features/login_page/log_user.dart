@@ -1,11 +1,6 @@
-import 'dart:developer';
-
 import 'package:cademeudinheiro/features/user/user_dao.dart';
 import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_model.dart';
-import 'package:cademeudinheiro/features/user/user_store.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 //Faz a conexão com o usuário e se estiver tudo certo armazena as informações dele no store
 Future conectUser(String name, String passwd) async {
@@ -20,10 +15,13 @@ Future conectUser(String name, String passwd) async {
 
     if (_user.passwd == passwd) {
       _userInfo.logged = true;
+      _userInfo.userId = _user.id!;
+      _userInfo.userNick = _user.nick!;
       _userInfo.userName = _user.name!;
       _userInfo.userEmail = _user.email!;
       _userInfo.userMinim = _user.minim!;
       _userInfo.userSald = _user.sald!;
+      _userInfo.userPasswd = _user.passwd!;
       return _userInfo;
     } else {
       _userInfo.logged = false;

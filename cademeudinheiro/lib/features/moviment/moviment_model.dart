@@ -5,20 +5,21 @@ class MovimentModel extends Entity {
   int? id;
   int? userID;
   String? descri;
-  double? sald;
-  String? data;
+  double? value;
+  String? date;
   String? type;
+  String? local;
 
 //<editor-fold desc="Data Methods">
 
-  MovimentModel({
-    this.id,
-    this.userID,
-    this.descri,
-    this.sald,
-    this.data,
-    this.type
-  });
+  MovimentModel(
+      {this.id,
+      this.userID,
+      this.descri,
+      this.value,
+      this.date,
+      this.type,
+      this.local});
 
   @override
   bool operator ==(Object other) =>
@@ -28,17 +29,19 @@ class MovimentModel extends Entity {
           id == other.id &&
           userID == other.userID &&
           descri == other.descri &&
-          sald == other.sald &&
-          data == other.data &&
-          type == other.type);
+          value == other.value &&
+          date == other.date &&
+          type == other.type &&
+          local == other.local);
 
   @override
   int get hashCode =>
       id.hashCode ^
       userID.hashCode ^
       descri.hashCode ^
-      sald.hashCode ^
-      data.hashCode ^
+      value.hashCode ^
+      date.hashCode ^
+      local.hashCode ^
       type.hashCode;
 
   @override
@@ -47,29 +50,30 @@ class MovimentModel extends Entity {
         ' id: $id,' +
         ' nome: $userID,' +
         ' email: $descri,' +
-        ' sald: $sald,' +
-        ' data: $data' +
+        ' value: $value,' +
+        ' data: $date' +
+        ' local: $local' +
         ' type: $type'
-        '}';
+            '}';
   }
 
   MovimentModel copyWith({
     int? id,
     int? userID,
     String? descri,
-    double? sald,
+    double? value,
     String? data,
     String? type,
-
+    String? local,
   }) {
     return MovimentModel(
-      id: id ?? this.id,
-      userID: userID ?? this.userID,
-      descri: descri ?? this.descri,
-      sald: sald ?? this.sald,
-      data: data ?? this.data,
-      type: type ?? this.type
-    );
+        id: id ?? this.id,
+        userID: userID ?? this.userID,
+        descri: descri ?? this.descri,
+        value: value ?? this.value,
+        date: data ?? this.date,
+        local: data ?? this.local,
+        type: type ?? this.type);
   }
 
   Map<String, dynamic> toMap() {
@@ -77,21 +81,22 @@ class MovimentModel extends Entity {
       'id': this.id,
       'name': this.userID,
       'email': this.descri,
-      'sald': this.sald,
-      'data' : this.data,
-      'type' : this.type
+      'value': this.value,
+      'data': this.date,
+      'type': this.type,
+      'local': this.local
     };
   }
 
   factory MovimentModel.fromJson(Map<String, dynamic> json) {
     return MovimentModel(
-      id: json['id'] as int,
-      userID: json['name'] as int,
-      descri: json['email'] as String,
-      sald: json['sald'] as double,
-      data: json['data'] as String,
-      type: json['type'] as String
-    );
+        id: json['id'] as int,
+        userID: json['name'] as int,
+        descri: json['email'] as String,
+        value: json['value'] as double,
+        date: json['data'] as String,
+        local: json['local'] as String,
+        type: json['type'] as String);
   }
 
   String toJson() => json.encode(toMap());
