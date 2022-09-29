@@ -48,8 +48,8 @@ class MovimentModel extends Entity {
   String toString() {
     return 'UserModel{' +
         ' id: $id,' +
-        ' nome: $userID,' +
-        ' email: $descri,' +
+        ' userID: $userID,' +
+        ' descri: $descri,' +
         ' value: $value,' +
         ' data: $date' +
         ' local: $local' +
@@ -79,8 +79,8 @@ class MovimentModel extends Entity {
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
-      'name': this.userID,
-      'email': this.descri,
+      'userID': this.userID,
+      'descri': this.descri,
       'value': this.value,
       'data': this.date,
       'type': this.type,
@@ -90,13 +90,13 @@ class MovimentModel extends Entity {
 
   factory MovimentModel.fromJson(Map<String, dynamic> json) {
     return MovimentModel(
-        id: json['id'] as int,
-        userID: json['name'] as int,
-        descri: json['email'] as String,
-        value: json['value'] as double,
-        date: json['data'] as String,
-        local: json['local'] as String,
-        type: json['type'] as String);
+        id: json['id'],
+        userID: json['userID'],
+        descri: json['descri'],
+        value: json['value'],
+        date: json['data'],
+        local: json['local'],
+        type: json['type']);
   }
 
   String toJson() => json.encode(toMap());

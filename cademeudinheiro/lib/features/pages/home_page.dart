@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:cademeudinheiro/features/home/appbar.dart';
-import 'package:cademeudinheiro/features/home/drawer.dart';
+import 'package:cademeudinheiro/features/widgets/appbar.dart';
+import 'package:cademeudinheiro/features/widgets/drawer.dart';
+import 'package:cademeudinheiro/features/moviment/reg_mov.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _homeState extends State<HomePage> {
+  var _descriController = TextEditingController();
+  var _valueController = TextEditingController();
+  var _localController = TextEditingController();
+  var _dateController = TextEditingController();
+
   late UserStore _userStore = UserStore();
   @override
   void didChangeDependencies() {
@@ -105,6 +111,7 @@ class _homeState extends State<HomePage> {
                     width: screenSize.width * 0.35,
                     height: screenSize.height * 0.07,
                     child: TextFormField(
+                      controller: _localController,
                       style: const TextStyle(
                           color: Color.fromARGB(255, 0, 194, 184)),
                       decoration: const InputDecoration(
@@ -126,10 +133,7 @@ class _homeState extends State<HomePage> {
                     width: screenSize.width * 0.20,
                     height: screenSize.height * 0.07,
                     child: TextFormField(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        RealInputFormatter()
-                      ],
+                      controller: _valueController,
                       style: const TextStyle(
                           color: Color.fromARGB(255, 0, 194, 184)),
                       decoration: const InputDecoration(
@@ -149,6 +153,7 @@ class _homeState extends State<HomePage> {
                     width: screenSize.width * 0.20,
                     height: screenSize.height * 0.07,
                     child: TextFormField(
+                      controller: _dateController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         DataInputFormatter(),
@@ -176,6 +181,7 @@ class _homeState extends State<HomePage> {
               width: screenSize.width * 0.85,
               height: screenSize.height * 0.08,
               child: TextFormField(
+                controller: _descriController,
                 minLines: 1,
                 maxLines: 4,
                 style: const TextStyle(
@@ -192,38 +198,70 @@ class _homeState extends State<HomePage> {
                             color: Color.fromARGB(255, 0, 194, 184)))),
               ),
             ),
-            SizedBox(
-              width: screenSize.width * 0.85,
-              height: screenSize.height * 0.07,
-              child: Row(children: [
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.white),
-                  width: screenSize.width * 0.3,
-                  height: screenSize.width * 0.1,
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.remove,
-                      ),
-                      onPressed: (() {})),
-                ),
-                Container(
-                  margin:
-                      EdgeInsets.only(top: 5, left: screenSize.width * 0.25),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.white),
-                  width: screenSize.width * 0.3,
-                  height: screenSize.width * 0.1,
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.add,
-                      ),
-                      onPressed: (() {})),
-                ),
-              ]),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 9),
+              child: SizedBox(
+                width: screenSize.width * 0.85,
+                height: screenSize.height * 0.07,
+                child: Row(children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white),
+                    width: screenSize.width * 0.3,
+                    height: screenSize.width * 0.1,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.remove,
+                        ),
+                        onPressed: (() async {
+                          await registerMoviment(
+                              _userStore.ID!,
+                              _localController.text,
+                              double.parse(_valueController.text),
+                              _descriController.text,
+                              _dateController.text,
+                              'OUT');
+                          _userStore.setSald(_userStore.sald! -
+                              double.parse(_valueController.text));
+
+                          _dateController.text = '';
+                          _valueController.text = '';
+                          _descriController.text = '';
+                          _localController.text = '';
+                        })),
+                  ),
+                  Container(
+                    margin:
+                        EdgeInsets.only(top: 5, left: screenSize.width * 0.25),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white),
+                    width: screenSize.width * 0.3,
+                    height: screenSize.width * 0.1,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.add,
+                        ),
+                        onPressed: (() async {
+                          await registerMoviment(
+                              _userStore.ID!,
+                              _localController.text,
+                              double.parse(_valueController.text),
+                              _descriController.text,
+                              _dateController.text,
+                              'IN');
+                          _userStore.setSald(_userStore.sald! +
+                              double.parse(_valueController.text));
+                          _dateController.text = '';
+                          _valueController.text = '';
+                          _descriController.text = '';
+                          _localController.text = '';
+                        })),
+                  ),
+                ]),
+              ),
             )
           ]),
         ));

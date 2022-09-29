@@ -1,4 +1,4 @@
-import 'package:cademeudinheiro/features/login_page/log_user.dart';
+import 'package:cademeudinheiro/features/user/log_user.dart';
 import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:flutter/material.dart';

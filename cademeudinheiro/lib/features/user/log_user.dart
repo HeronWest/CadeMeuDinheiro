@@ -7,7 +7,7 @@ Future conectUser(String name, String passwd) async {
   UserInfo _userInfo = UserInfo();
   UserModel? _user;
   UserDao _userDao = UserDao();
-  List<dynamic> consult = await _userDao.searchUser(name);
+  List<dynamic> consult = await _userDao.searchUserByName(name);
 
   if (consult.isNotEmpty) {
     List<UserModel> users = consult.cast<UserModel>();

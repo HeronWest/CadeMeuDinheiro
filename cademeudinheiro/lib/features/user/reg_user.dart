@@ -7,7 +7,7 @@ Future registerUser(
   UserDao _userDao = UserDao();
   UserModel? user;
 
-  List<dynamic> consult = await _userDao.searchUser(name);
+  List<dynamic> consult = await _userDao.searchUserByName(name);
 
   if (consult.isNotEmpty) {
     List<UserModel> users = consult.cast<UserModel>();
@@ -42,8 +42,9 @@ Future registerUser(
             return AlertDialog(
               title: const Text('Erro'),
               content: SingleChildScrollView(
-                  child: ListBody(
-                      children: const <Widget>[Text('Suas senhas não coincidem')])),
+                  child: ListBody(children: const <Widget>[
+                Text('Suas senhas não coincidem')
+              ])),
               actions: [
                 TextButton(
                     onPressed: (() {
@@ -69,8 +70,9 @@ Future registerUser(
             return AlertDialog(
               title: const Text('Só sucesso'),
               content: SingleChildScrollView(
-                  child: ListBody(
-                      children: const <Widget>[Text('Cadastro feito com êxito!')])),
+                  child: ListBody(children: const <Widget>[
+                Text('Cadastro feito com êxito!')
+              ])),
               actions: [
                 TextButton(
                     onPressed: (() {

@@ -59,6 +59,25 @@ class _nameState extends State<MyDrawer> {
                     backgroundColor: MaterialStateProperty.all(
                         Color.fromARGB(255, 0, 194, 184))),
                 onPressed: () {
+                  Navigator.pushNamed(context, '/consult_page');
+                },
+                child: const Text(
+                  'CONSULTAS',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )),
+          Container(
+              margin: EdgeInsets.only(top: 10),
+              width: screenSize.width * 0.8,
+              height: screenSize.height * 0.06,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromARGB(255, 0, 194, 184))),
+                onPressed: () {
                   Navigator.pushReplacementNamed(context, '/login_page');
                 },
                 child: const Text(

@@ -7,6 +7,29 @@ class MovimentDao extends BaseDao<MovimentModel> {
     return MovimentModel.fromJson(map);
   }
 
+  getMoviments() async {
+    try {
+      var dbClient = await db;
+      List<MovimentModel> retur = await query('SELECT * FROM moviments');
+      print('Moviments$retur');
+      return retur;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getMovimentsByType(type) async {
+    try {
+      var dbClient = await db;
+      List<MovimentModel> retur =
+          await query('SELECT * FROM moviments WHERE type = "$type"');
+      print('Moviments$retur');
+      return retur;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   String get tableName => "moviments";
 }

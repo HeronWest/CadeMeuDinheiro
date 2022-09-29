@@ -9,8 +9,10 @@ CREATE TABLE IF NOT EXISTS users(
 );
 CREATE TABLE IF NOT EXISTS moviments(
     id              INTEGER PRIMARY KEY autoincrement,
+    userID          INTEGER,
     data            TEXT,
-    sald            REAL,
+    local           TEXT,
+    value           REAL,
     descri          TEXT,
     type            TEXT
 );
