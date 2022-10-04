@@ -16,11 +16,13 @@ abstract class _Moviment with Store {
   bool load = true;
 
   @action
-  setMoviments({String local = '', String date = ''}) async {
+  setMoviments({String initialDate = '', String finalDate = ''}) async {
     load = false;
-    moviments = await _movimentDao.getMoviments();
+    moviments = await _movimentDao.getMoviments(
+        initialDate: initialDate, finalDate: finalDate);
     load = true;
   }
+
   setMovimentsByType(type) async {
     load = false;
     moviments = await _movimentDao.getMovimentsByType(type);

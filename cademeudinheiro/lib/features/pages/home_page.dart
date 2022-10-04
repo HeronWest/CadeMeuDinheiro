@@ -6,7 +6,9 @@ import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +18,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _homeState extends State<HomePage> {
+  Future<void> _sendSMS(List<String> recipients) async {
+    try {
+      String _result = await sendSMS(
+        message: 'Seu saldo está abaixo do seu limite, cuide com os gastos!',
+        recipients: recipients,
+        sendDirect: true,
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   var _descriController = TextEditingController();
   var _valueController = TextEditingController();
   var _localController = TextEditingController();
@@ -216,12 +230,19 @@ class _homeState extends State<HomePage> {
                           Icons.remove,
                         ),
                         onPressed: (() async {
+                          var inputFormat = DateFormat('dd/MM/yyyy');
+                          var inputDate = inputFormat.parse(
+                              '${_dateController.text}'); // <-- dd/MM 24H format
+
+                          var outputFormat = DateFormat('yyyy/MM/dd');
+                          var outputDate = outputFormat.format(inputDate);
+
                           await registerMoviment(
                               _userStore.ID!,
                               _localController.text,
                               double.parse(_valueController.text),
                               _descriController.text,
-                              _dateController.text,
+                              outputDate.replaceAll('/', '-'),
                               'OUT');
                           _userStore.setSald(_userStore.sald! -
                               double.parse(_valueController.text));
@@ -230,6 +251,12 @@ class _homeState extends State<HomePage> {
                           _valueController.text = '';
                           _descriController.text = '';
                           _localController.text = '';
+
+                          if (_userStore.sald! < _userStore.minim!) {
+                            List<String> numbers = [];
+                            numbers.add(_userStore.email);
+                            _sendSMS(numbers);
+                          }
                         })),
                   ),
                   Container(
@@ -245,12 +272,18 @@ class _homeState extends State<HomePage> {
                           Icons.add,
                         ),
                         onPressed: (() async {
+                          var inputFormat = DateFormat('dd/MM/yyyy');
+                          var inputDate = inputFormat.parse(
+                              '${_dateController.text}'); // <-- dd/MM 24H format
+
+                          var outputFormat = DateFormat('yyyy/MM/dd');
+                          var outputDate = outputFormat.format(inputDate);
                           await registerMoviment(
                               _userStore.ID!,
                               _localController.text,
                               double.parse(_valueController.text),
                               _descriController.text,
-                              _dateController.text,
+                              outputDate.replaceAll('/', '-'),
                               'IN');
                           _userStore.setSald(_userStore.sald! +
                               double.parse(_valueController.text));

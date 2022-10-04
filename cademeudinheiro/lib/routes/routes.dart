@@ -1,3 +1,6 @@
+import 'package:cademeudinheiro/features/pages/precons_page.dart';
+import 'package:cademeudinheiro/features/pages/relatory_page.dart';
+
 import '../features/pages/conf_page.dart';
 import '../features/pages/cad_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,14 +17,17 @@ class Routes {
   static const conf_page = '/conf_page';
   static const preconf_page = '/preconf_page';
   static const consult_page = '/consult_page';
-
+  static const precons_page = '/precons_page';
+  static const relatory_page = '/relatory_page';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     login_page: (BuildContext context) => LoginPage(),
     cad_page: (BuildContext context) => CadPage(),
     home_page: (BuildContext context) => HomePage(),
     conf_page: (BuildContext context) => ConfPage(),
-    preconf_page:(BuildContext context) => PreConfPage(),
+    preconf_page: (BuildContext context) => PreConfPage(),
     consult_page: (BuildContext context) => ConsultPage(),
+    precons_page: (BuildContext context) => PreConsPage(),
+    relatory_page: (BuildContext context) => RelatoryPage(),
   };
 }

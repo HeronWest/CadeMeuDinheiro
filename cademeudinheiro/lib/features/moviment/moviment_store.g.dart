@@ -44,9 +44,9 @@ mixin _$MovimentStore on _Moviment, Store {
       AsyncAction('_Moviment.setMoviments', context: context);
 
   @override
-  Future setMoviments({String local = '', String date = ''}) {
-    return _$setMovimentsAsyncAction
-        .run(() => super.setMoviments(local: local, date: date));
+  Future setMoviments({String initialDate = '', String finalDate = ''}) {
+    return _$setMovimentsAsyncAction.run(() =>
+        super.setMoviments(initialDate: initialDate, finalDate: finalDate));
   }
 
   @override

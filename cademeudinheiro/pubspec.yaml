@@ -18,6 +18,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.1.5
   brasil_fields: ^1.5.0
+  flutter_speed_dial: ^6.0.0
+  syncfusion_flutter_datepicker: ^20.3.47
+  pdf: ^3.8.3
+  path_provider: ^2.0.11
+  flutter_sms: ^2.3.3
 
 
 dev_dependencies:
@@ -30,7 +35,7 @@ dev_dependencies:
   flutter_native_splash: ^2.2.9
 
 flutter:
-
+  
   assets:
     - assets/images/
     - assets/sql/

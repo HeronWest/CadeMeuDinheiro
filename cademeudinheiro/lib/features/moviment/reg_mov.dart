@@ -4,7 +4,7 @@ import 'package:cademeudinheiro/features/user/user_dao.dart';
 import 'package:cademeudinheiro/features/user/user_model.dart';
 
 Future registerMoviment(int userID, String local, double value,
-    String description, String date, String type) async {
+    String description, date, String type) async {
   //Moviment
   MovimentDao _movimentDao = MovimentDao();
   MovimentModel newMoviment = MovimentModel()

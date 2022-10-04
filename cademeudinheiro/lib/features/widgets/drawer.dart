@@ -59,7 +59,7 @@ class _nameState extends State<MyDrawer> {
                     backgroundColor: MaterialStateProperty.all(
                         Color.fromARGB(255, 0, 194, 184))),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/consult_page');
+                  Navigator.pushNamed(context, '/precons_page');
                 },
                 child: const Text(
                   'CONSULTAS',
