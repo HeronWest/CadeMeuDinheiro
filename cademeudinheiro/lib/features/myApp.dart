@@ -1,6 +1,8 @@
 import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
 import 'package:cademeudinheiro/features/pages/login_page.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
+import 'package:cademeudinheiro/services/firebase_messaging_service.dart';
+import 'package:cademeudinheiro/services/nottification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,10 +16,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MultiProvider(
       providers: [
+        Provider<NotificationService>(create: (context) => NotificationService()),
         Provider<UserStore>(create: (_) => _userStore),
-        Provider<MovimentStore>(create: (_) => _movimentStore)
+        Provider<MovimentStore>(create: (_) => _movimentStore),
+        Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()))
       ],
       child: MaterialApp(
         initialRoute: Routes.initial,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1042000789336-3bk91dh5ajqgq1ikd5ccrdjkald7khk6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1042000789336-3bk91dh5ajqgq1ikd5ccrdjkald7khk6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB529MXoUt3p1FCKRv4yuN3CYjdQHMEDco</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1042000789336</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.cademeudinheiro</string>
+	<key>PROJECT_ID</key>
+	<string>cademeudinheiro-d32f4</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cademeudinheiro-d32f4.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1042000789336:ios:207587e906b0cfaeee6f2d</string>
+</dict>
+</plist>

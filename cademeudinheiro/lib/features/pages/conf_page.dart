@@ -11,13 +11,12 @@ class ConfPage extends StatefulWidget {
   State<ConfPage> createState() => _ConfPageState();
 }
 
-TextEditingController _nickController = TextEditingController();
-TextEditingController _emailController = TextEditingController();
-TextEditingController _passwdController = TextEditingController();
-
 String assetname = 'assets/images/porkIcon.svg';
 
 class _ConfPageState extends State<ConfPage> {
+  TextEditingController _nickController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwdController = TextEditingController();
   late UserStore _userStore = UserStore();
   late double _value;
   @override

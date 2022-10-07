@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1042000789336",
+    "project_id": "cademeudinheiro-d32f4",
+    "storage_bucket": "cademeudinheiro-d32f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042000789336:android:b62c116b22b59e4cee6f2d",
+        "android_client_info": {
+          "package_name": "com.example.cademeudinheiro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1042000789336-1s8shsnsb6v4i1oaacktu8q98ourtsq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQPiNdEXmKhtRgrLOpQiEKhavFU9pCL_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1042000789336-1s8shsnsb6v4i1oaacktu8q98ourtsq8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1042000789336-3bk91dh5ajqgq1ikd5ccrdjkald7khk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cademeudinheiro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

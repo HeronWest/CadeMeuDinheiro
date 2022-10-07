@@ -1,3 +1,5 @@
+import 'dart:ffi';
+import 'package:intl/intl.dart';
 import 'package:cademeudinheiro/features/moviment/moviment_model.dart';
 import '../../helper/sql/base_dao.dart';
 
@@ -32,6 +34,21 @@ class MovimentDao extends BaseDao<MovimentModel> {
         List<MovimentModel> retur = await query('SELECT * FROM moviments');
         return retur;
       }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getLastValues(String date) async {
+    try {
+      var dbClient = await db;
+      var today = DateTime.now();
+      var date = DateFormat('yyyy-MM-dd').format(today).toString();
+      print(date);
+      List<Map> value = await dbClient!
+          .rawQuery('SELECT value FROM moviments WHERE data=?', ['$date']);
+      value.forEach((e) => print(e));
+      return value;
     } catch (e) {
       print(e);
     }

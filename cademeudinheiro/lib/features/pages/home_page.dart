@@ -1,14 +1,20 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
 import 'package:cademeudinheiro/features/widgets/appbar.dart';
 import 'package:cademeudinheiro/features/widgets/drawer.dart';
 import 'package:cademeudinheiro/features/moviment/reg_mov.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
+import 'package:cademeudinheiro/services/firebase_messaging_service.dart';
+import 'package:cademeudinheiro/services/nottification_service.dart';
+import 'package:cademeudinheiro/utils/convert_days.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,30 +23,62 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _homeState();
 }
 
+class _ConsumData {
+  _ConsumData(this.days, this.values);
+
+  final String days;
+  final double values;
+}
+
 class _homeState extends State<HomePage> {
-  Future<void> _sendSMS(List<String> recipients) async {
-    try {
-      String _result = await sendSMS(
-        message: 'Seu saldo está abaixo do seu limite, cuide com os gastos!',
-        recipients: recipients,
-        sendDirect: true,
-      );
-    } catch (e) {
-      print(e);
-    }
+  WeekDays newWeekDays = WeekDays();
+  List<_ConsumData> data = [];
+  List<String> days = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userStore = Provider.of<UserStore>(context);
+    _movimentStore = Provider.of<MovimentStore>(context);
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _movimentStore.setLastMoviments();
+    days = newWeekDays.convertDay();
+    data = [
+      _ConsumData('${days[7]}', 35),
+      _ConsumData('${days[6]}', 28),
+      _ConsumData('${days[5]}', 34),
+      _ConsumData('${days[4]}', 32),
+      _ConsumData('${days[3]}', 40),
+      _ConsumData('${days[2]}', 40),
+      _ConsumData('${days[1]}', 40),
+      _ConsumData('Hoje', 5)
+    ];
+  }
+
+  //Controladores
   var _descriController = TextEditingController();
   var _valueController = TextEditingController();
   var _localController = TextEditingController();
   var _dateController = TextEditingController();
 
   late UserStore _userStore = UserStore();
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    _userStore = Provider.of<UserStore>(context);
+  late MovimentStore _movimentStore = MovimentStore();
+
+  showNotification(sald, minim) async {
+    setState(() {
+      if (sald < minim) {
+        Provider.of<NotificationService>(context, listen: false)
+            .showNotification(CustomNotification(
+                id: 2,
+                title: 'CUIDADO!',
+                body: 'Seu saldo está abaixo do mínimo',
+                payload: '/home_page'));
+      }
+    });
   }
 
   @override
@@ -103,15 +141,29 @@ class _homeState extends State<HomePage> {
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              width: screenSize.width * 0.85,
-              height: screenSize.height * 0.35,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      width: 1, color: Color.fromARGB(255, 0, 194, 184)),
-                  color: Color.fromARGB(255, 217, 245, 243)),
+            Observer(
+              builder: (_) => Container(
+                margin: const EdgeInsets.only(top: 10),
+                width: screenSize.width * 0.85,
+                height: screenSize.height * 0.35,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        width: 1, color: Color.fromARGB(255, 0, 194, 184)),
+                    color: Color.fromARGB(255, 217, 245, 243)),
+                child: SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  title: ChartTitle(text: 'Consumo'),
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <ChartSeries<_ConsumData, String>>[
+                    LineSeries(
+                      dataSource: data,
+                      xValueMapper: (_ConsumData values, _) => values.days,
+                      yValueMapper: (_ConsumData values, _) => values.values,
+                    )
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -247,16 +299,12 @@ class _homeState extends State<HomePage> {
                           _userStore.setSald(_userStore.sald! -
                               double.parse(_valueController.text));
 
+                          await showNotification(
+                              _userStore.sald!, _userStore.minim!);
                           _dateController.text = '';
                           _valueController.text = '';
                           _descriController.text = '';
                           _localController.text = '';
-
-                          if (_userStore.sald! < _userStore.minim!) {
-                            List<String> numbers = [];
-                            numbers.add(_userStore.email);
-                            _sendSMS(numbers);
-                          }
                         })),
                   ),
                   Container(

@@ -1,9 +1,12 @@
 import 'package:cademeudinheiro/features/user/log_user.dart';
 import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
+import 'package:cademeudinheiro/services/nottification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
+import '../../services/firebase_messaging_service.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -13,6 +16,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    initilizeFirebaseMessaging();
+    checkNotifications();
+  }
+
+  checkNotifications() async {
+    await Provider.of<NotificationService>(context, listen: false)
+        .checkForNotifications();
+  }
+
+  initilizeFirebaseMessaging() async {
+    await Provider.of<FirebaseMessagingService>(context, listen: false)
+        .initialize();
+  }
+
   UserInfo _userInfo = UserInfo();
   late UserStore _userStore;
   final _name = TextEditingController();

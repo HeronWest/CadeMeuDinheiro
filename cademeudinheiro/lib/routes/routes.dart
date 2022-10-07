@@ -1,6 +1,5 @@
 import 'package:cademeudinheiro/features/pages/precons_page.dart';
 import 'package:cademeudinheiro/features/pages/relatory_page.dart';
-
 import '../features/pages/conf_page.dart';
 import '../features/pages/cad_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,4 +29,6 @@ class Routes {
     precons_page: (BuildContext context) => PreConsPage(),
     relatory_page: (BuildContext context) => RelatoryPage(),
   };
+
+  static GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();
 }
