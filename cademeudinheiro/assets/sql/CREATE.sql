@@ -5,11 +5,13 @@ CREATE TABLE IF NOT EXISTS users(
     passwd          TEXT,
     email           TEXT,
     sald            REAL,
-    minim           REAL
+    minim           REAL,
+    type            TEXT
 );
 CREATE TABLE IF NOT EXISTS moviments(
     id              INTEGER PRIMARY KEY autoincrement,
-    userID          INTEGER,
+    user_id         INTEGER,
+    responsible     INTEGER,
     data            TEXT,
     local           TEXT,
     value           REAL,

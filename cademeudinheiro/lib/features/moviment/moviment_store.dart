@@ -2,6 +2,7 @@ import 'package:cademeudinheiro/features/moviment/moviment_controller.dart';
 import 'package:cademeudinheiro/features/moviment/moviment_dao.dart';
 import 'package:mobx/mobx.dart';
 import 'package:intl/intl.dart';
+import '../../utils/convert_days.dart';
 import 'moviment_model.dart';
 part 'moviment_store.g.dart';
 
@@ -10,14 +11,71 @@ class MovimentStore = _Moviment with _$MovimentStore;
 abstract class _Moviment with Store {
   MovimentDao _movimentDao = MovimentDao();
 
+  WeekDays newWeekDays = WeekDays();
+
   @observable
   List<MovimentModel> moviments = [];
 
   @observable
-  List lastMoviments = [];
+  List<double> lastMoviments = [];
 
   @observable
   bool load = true;
+
+  @observable
+  String descriController = '';
+
+  @observable
+  String valueController = '';
+
+  @observable
+  String localController = '';
+
+  @observable
+  String dateController = '';
+
+  @observable
+  List<String> days = [];
+
+  @observable
+  List<_ConsumData> data = [];
+
+  @action
+  setData(List<_ConsumData> values) => data = values;
+
+  @action
+  setDays(List<String> convertedDays) => days = convertedDays;
+
+  @action
+  setLoad() => load = !load;
+
+  @action
+  setDescriController(value) {
+    descriController = value;
+  }
+
+  @action
+  setValueController(value) {
+    valueController = value;
+  }
+
+  @action
+  setLocalController(value) {
+    localController = value;
+  }
+
+  @action
+  setDateController(value) {
+    dateController = value;
+  }
+
+  @action
+  cleanControllers() {
+    descriController = '';
+    valueController = '';
+    localController = '';
+    dateController = '';
+  }
 
   @action
   setMoviments({String initialDate = '', String finalDate = ''}) async {
@@ -36,14 +94,43 @@ abstract class _Moviment with Store {
 
   @action
   setLastMoviments() async {
+    load = false;
+    lastMoviments = [];
+    days = await newWeekDays.convertDay();
     var today = DateTime.now();
-
     for (int i = 0; i <= 7; i++) {
       var date = DateFormat('yyyy-MM-dd').format(today);
-      lastMoviments.add(await _movimentDao.getLastValues(date));
+      List<MovimentModel> value = await _movimentDao.getLastValues(date);
+      for (int i = 0; i < value.length; i++) {
+        value[i].value != null
+            ? lastMoviments.add(value[i].value!)
+            : lastMoviments.add(0.0);
+      }
       today = today.subtract(Duration(days: 1));
     }
-
+    getData();
     print(lastMoviments);
+    load = true;
   }
+
+  @action
+  getData() {
+    data = [
+      _ConsumData('${days[7]}', lastMoviments[7]),
+      _ConsumData('${days[6]}', lastMoviments[6]),
+      _ConsumData('${days[5]}', lastMoviments[5]),
+      _ConsumData('${days[4]}', lastMoviments[4]),
+      _ConsumData('${days[3]}', lastMoviments[3]),
+      _ConsumData('${days[2]}', lastMoviments[2]),
+      _ConsumData('${days[1]}', lastMoviments[1]),
+      _ConsumData('Hoje', lastMoviments[0])
+    ];
+  }
+}
+
+class _ConsumData {
+  _ConsumData(this.days, this.values);
+
+  final String days;
+  final double values;
 }

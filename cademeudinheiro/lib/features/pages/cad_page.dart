@@ -171,6 +171,7 @@ class _CadPageState extends State<CadPage> {
                 onPressed: (() async {
                   await registerUser(
                       _nameController.text,
+                      'normal',
                       _nickController.text,
                       _emailController.text,
                       _passwdController.text,

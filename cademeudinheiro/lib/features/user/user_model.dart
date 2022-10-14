@@ -3,6 +3,7 @@ import '../../helper/sql/entity.dart';
 
 class UserModel extends Entity {
   int? id;
+  String? type;
   String? name;
   String? nick;
   String? passwd;
@@ -14,6 +15,7 @@ class UserModel extends Entity {
 
   UserModel({
     this.id,
+    this.type,
     this.name,
     this.nick,
     this.email,
@@ -28,6 +30,7 @@ class UserModel extends Entity {
       (other is UserModel &&
           runtimeType == other.runtimeType &&
           id == other.id &&
+          type == other.type &&
           name == other.name &&
           nick == other.nick &&
           minim == other.minim &&
@@ -38,6 +41,7 @@ class UserModel extends Entity {
   @override
   int get hashCode =>
       id.hashCode ^
+      type.hashCode ^
       name.hashCode ^
       nick.hashCode ^
       minim.hashCode ^
@@ -49,6 +53,7 @@ class UserModel extends Entity {
   String toString() {
     return 'UserModel{' +
         ' id: $id,' +
+        ' type: $type,' +
         ' name: $name,' +
         ' nick: $nick,' +
         ' passwd $passwd'
@@ -58,29 +63,10 @@ class UserModel extends Entity {
         '}';
   }
 
-  UserModel copyWith({
-    int? id,
-    String? name,
-    String? nick,
-    String? passwd,
-    String? email,
-    double? sald,
-    double? minim,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      nick: nick ?? this.nick,
-      email: email ?? this.email,
-      sald: sald ?? this.sald,
-      minim: minim ?? this.minim,
-      passwd: passwd ?? this.passwd
-    );
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
+      'type': this.type,
       'name': this.name,
       'nick': this.nick,
       'minim': this.minim,
@@ -93,6 +79,7 @@ class UserModel extends Entity {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] as int,
+      type: json['type'] as String,
       name: json['name'] as String,
       nick: json['nick'] as String,
       minim: json['minim'] as double,

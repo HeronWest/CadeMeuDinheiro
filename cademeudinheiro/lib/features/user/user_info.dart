@@ -1,6 +1,7 @@
 class UserInfo {
   bool? logged;
   String? userName;
+  String? userType;
   String? userNick;
   String? userEmail;
   double? userMinim;
@@ -10,6 +11,7 @@ class UserInfo {
 
   UserInfo() {
     this.logged;
+    this.userType;
     this.userNick;
     this.userName;
     this.userEmail;

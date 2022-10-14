@@ -1,3 +1,4 @@
+import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
 import 'package:cademeudinheiro/features/user/log_user.dart';
 import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/firebase_messaging_service.dart';
+import '../../utils/convert_days.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -16,6 +18,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  UserInfo _userInfo = UserInfo();
+  late UserStore _userStore;
+  final _name = TextEditingController();
+  final _passwd = TextEditingController();
+  late MovimentStore _movimentStore;
+
   @override
   void initState() {
     super.initState();
@@ -33,15 +41,11 @@ class _LoginPageState extends State<LoginPage> {
         .initialize();
   }
 
-  UserInfo _userInfo = UserInfo();
-  late UserStore _userStore;
-  final _name = TextEditingController();
-  final _passwd = TextEditingController();
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _userStore = Provider.of<UserStore>(context);
+    _movimentStore = Provider.of<MovimentStore>(context);
   }
 
   @override
@@ -144,7 +148,16 @@ class _LoginPageState extends State<LoginPage> {
                     _userStore.setSald(_userInfo.userSald!);
                     _userStore.setMinim(_userInfo.userMinim!);
                     _userStore.setPasswd(_userInfo.userPasswd!);
-                    Navigator.pushReplacementNamed(context, '/home_page');
+                    _userStore.setType(_userInfo.userType!);
+
+                    if(_userStore.type == 'adm') {
+                      Navigator.pushReplacementNamed(context, '/adm_page');
+
+                    } else {
+                      await _movimentStore.setLastMoviments();
+
+                      Navigator.pushReplacementNamed(context, '/home_page');
+                    }
                   }
                   _name.text = '';
                   _passwd.text = '';

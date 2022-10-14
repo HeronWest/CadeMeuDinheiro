@@ -6,6 +6,7 @@ import 'package:cademeudinheiro/services/nottification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../adm/adm_store.dart';
 import '../routes/routes.dart';
 
 class MyApp extends StatelessWidget {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   final UserStore _userStore = UserStore();
   final MovimentStore _movimentStore = MovimentStore();
+  final AdmStore _admStore = AdmStore();
 
   @override
   Widget build(BuildContext context) {

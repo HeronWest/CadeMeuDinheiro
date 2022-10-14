@@ -39,6 +39,21 @@ mixin _$UserStore on _User, Store {
     });
   }
 
+  late final _$typeAtom = Atom(name: '_User.type', context: context);
+
+  @override
+  String get type {
+    _$typeAtom.reportRead();
+    return super.type;
+  }
+
+  @override
+  set type(String value) {
+    _$typeAtom.reportWrite(value, super.type, () {
+      super.type = value;
+    });
+  }
+
   late final _$nickAtom = Atom(name: '_User.nick', context: context);
 
   @override
@@ -129,6 +144,17 @@ mixin _$UserStore on _User, Store {
   }
 
   @override
+  dynamic setType(String value) {
+    final _$actionInfo =
+        _$_UserActionController.startAction(name: '_User.setType');
+    try {
+      return super.setType(value);
+    } finally {
+      _$_UserActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setNick(String value) {
     final _$actionInfo =
         _$_UserActionController.startAction(name: '_User.setNick');
@@ -188,6 +214,7 @@ mixin _$UserStore on _User, Store {
     return '''
 ID: ${ID},
 name: ${name},
+type: ${type},
 nick: ${nick},
 email: ${email},
 passwd: ${passwd},

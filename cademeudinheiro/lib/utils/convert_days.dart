@@ -16,7 +16,7 @@ class WeekDays {
     }
   }
 
-  convertDay() {
+  convertDay() async {
     _getDays();
     for (int i in days) {
       String newDay = _weekDayConversion(i);

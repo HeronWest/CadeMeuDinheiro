@@ -16,6 +16,7 @@ Future conectUser(String name, String passwd) async {
     if (_user.passwd == passwd) {
       _userInfo.logged = true;
       _userInfo.userId = _user.id!;
+      _userInfo.userType = _user.type!;
       _userInfo.userNick = _user.nick!;
       _userInfo.userName = _user.name!;
       _userInfo.userEmail = _user.email!;

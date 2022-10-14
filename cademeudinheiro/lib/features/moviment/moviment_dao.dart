@@ -9,6 +9,10 @@ class MovimentDao extends BaseDao<MovimentModel> {
     return MovimentModel.fromJson(map);
   }
 
+  @override
+  String get tableName => "moviments";
+
+
   getMovimentsByType(type) async {
     try {
       var dbClient = await db;
@@ -42,18 +46,13 @@ class MovimentDao extends BaseDao<MovimentModel> {
   getLastValues(String date) async {
     try {
       var dbClient = await db;
-      var today = DateTime.now();
-      var date = DateFormat('yyyy-MM-dd').format(today).toString();
-      print(date);
-      List<Map> value = await dbClient!
-          .rawQuery('SELECT value FROM moviments WHERE data=?', ['$date']);
-      value.forEach((e) => print(e));
-      return value;
+      List<MovimentModel> values = await query(
+          'SELECT SUM(value) as value FROM moviments WHERE data=?', ['$date']);
+      return values;
     } catch (e) {
       print(e);
     }
   }
 
-  @override
-  String get tableName => "moviments";
+
 }

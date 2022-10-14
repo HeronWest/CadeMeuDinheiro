@@ -11,6 +11,9 @@ abstract class _User with Store {
   String name = '';
 
   @observable
+  String type = '';
+
+  @observable
   String nick = '';
 
   @observable
@@ -27,6 +30,9 @@ abstract class _User with Store {
 
   @action
   setID(int value) => ID = value;
+
+  @action
+  setType(String value) => type = value;
 
   @action
   setNick(String value) => nick = value;

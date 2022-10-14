@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'user_model.dart';
 
 Future registerUser(
-    String name, nick, email, passdw, rpasswd, BuildContext context) async {
+    String name, type, nick, email, passdw, rpasswd, BuildContext context) async {
   UserDao _userDao = UserDao();
   UserModel? user;
 
@@ -57,6 +57,7 @@ Future registerUser(
     } else {
       UserModel newUser = UserModel()
         ..name = name
+        ..type = type
         ..nick = nick
         ..email = email
         ..passwd = passdw

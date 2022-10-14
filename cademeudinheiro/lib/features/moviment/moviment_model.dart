@@ -3,7 +3,8 @@ import '../../helper/sql/entity.dart';
 
 class MovimentModel extends Entity {
   int? id;
-  int? userID;
+  int? user_id;
+  int? responsible;
   String? descri;
   double? value;
   String? date;
@@ -14,7 +15,8 @@ class MovimentModel extends Entity {
 
   MovimentModel(
       {this.id,
-      this.userID,
+      this.user_id,
+      this.responsible,
       this.descri,
       this.value,
       this.date,
@@ -27,7 +29,8 @@ class MovimentModel extends Entity {
       (other is MovimentModel &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          userID == other.userID &&
+          user_id == other.user_id &&
+          responsible == other.responsible &&
           descri == other.descri &&
           value == other.value &&
           date == other.date &&
@@ -37,7 +40,8 @@ class MovimentModel extends Entity {
   @override
   int get hashCode =>
       id.hashCode ^
-      userID.hashCode ^
+      user_id.hashCode ^
+      responsible.hashCode ^
       descri.hashCode ^
       value.hashCode ^
       date.hashCode ^
@@ -46,9 +50,10 @@ class MovimentModel extends Entity {
 
   @override
   String toString() {
-    return 'UserModel{' +
+    return 'MovimentModel{' +
         ' id: $id,' +
-        ' userID: $userID,' +
+        ' user_id: $user_id,' +
+        ' responsible: $responsible,' +
         ' descri: $descri,' +
         ' value: $value,' +
         ' data: $date' +
@@ -57,29 +62,11 @@ class MovimentModel extends Entity {
             '}';
   }
 
-  MovimentModel copyWith({
-    int? id,
-    int? userID,
-    String? descri,
-    double? value,
-    String? data,
-    String? type,
-    String? local,
-  }) {
-    return MovimentModel(
-        id: id ?? this.id,
-        userID: userID ?? this.userID,
-        descri: descri ?? this.descri,
-        value: value ?? this.value,
-        date: data ?? this.date,
-        local: data ?? this.local,
-        type: type ?? this.type);
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
-      'userID': this.userID,
+      'user_id': this.user_id,
+      'responsible': this.responsible,
       'descri': this.descri,
       'value': this.value,
       'data': this.date,
@@ -91,7 +78,8 @@ class MovimentModel extends Entity {
   factory MovimentModel.fromJson(Map<String, dynamic> json) {
     return MovimentModel(
         id: json['id'],
-        userID: json['userID'],
+        user_id: json['user_id'],
+        responsible: json['responsible'],
         descri: json['descri'],
         value: json['value'],
         date: json['data'],

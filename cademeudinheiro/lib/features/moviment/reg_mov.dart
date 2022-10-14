@@ -8,7 +8,7 @@ Future registerMoviment(int userID, String local, double value,
   //Moviment
   MovimentDao _movimentDao = MovimentDao();
   MovimentModel newMoviment = MovimentModel()
-    ..userID = userID
+    ..user_id = userID
     ..value = value
     ..local = local
     ..descri = description
