@@ -14,6 +14,8 @@ import 'package:pdf/widgets.dart' as pw;
 import '../moviment/moviment_store.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
+import '../user/user_store.dart';
+
 class CustomRow {
   final String movDate;
   final String movLoc;
@@ -166,12 +168,14 @@ class _RelatoryPageState extends State<RelatoryPage> {
   final PdfInvoiceService service = PdfInvoiceService();
 
   late MovimentStore _movimentStore;
+  late UserStore _userStore;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _movimentStore = Provider.of<MovimentStore>(context);
-    _movimentStore.setMoviments();
+    _movimentStore.setMoviments(_userStore.ID);
+    _userStore = Provider.of<UserStore>(context);
   }
 
   @override
@@ -280,6 +284,7 @@ class _RelatoryPageState extends State<RelatoryPage> {
                 List rangeI = _dateControllerI.text.split('/');
                 List rangeF = _dateControllerF.text.split('/');
                 await _movimentStore.setMoviments(
+                    _userStore.ID,
                     initialDate: DateTime(int.parse(rangeI[2]),
                             int.parse(rangeI[1]), int.parse(rangeI[0]))
                         .toString(),

@@ -85,12 +85,12 @@ mixin _$AdmStore on _Adm, Store {
     });
   }
 
-  late final _$getUsersAsyncAction =
-      AsyncAction('_Adm.getUsers', context: context);
+  late final _$getAllUsersAsyncAction =
+      AsyncAction('_Adm.getAllUsers', context: context);
 
   @override
-  Future getUsers() {
-    return _$getUsersAsyncAction.run(() => super.getUsers());
+  Future getAllUsers() {
+    return _$getAllUsersAsyncAction.run(() => super.getAllUsers());
   }
 
   late final _$_AdmActionController =

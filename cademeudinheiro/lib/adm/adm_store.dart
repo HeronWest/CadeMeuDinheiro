@@ -33,10 +33,10 @@ abstract class _Adm with Store {
   setUserFilterId(value) => userFilterId = value;
 
   @action
-  getUsers() async {
-    load = false;
-    users = await _admDao.searchAllUsers();
+  getAllUsers() async {
     load = true;
+    users = await _admDao.searchAllUsers();
+    load = false;
   }
 
 }

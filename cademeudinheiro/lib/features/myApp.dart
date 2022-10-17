@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   final MovimentStore _movimentStore = MovimentStore();
   final AdmStore _admStore = AdmStore();
 
+
   @override
   Widget build(BuildContext context) {
     
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         Provider<NotificationService>(create: (context) => NotificationService()),
         Provider<UserStore>(create: (_) => _userStore),
         Provider<MovimentStore>(create: (_) => _movimentStore),
+        Provider<AdmStore>(create: (_) => _admStore),
         Provider<FirebaseMessagingService>(create: (context) => FirebaseMessagingService(context.read<NotificationService>()))
       ],
       child: MaterialApp(

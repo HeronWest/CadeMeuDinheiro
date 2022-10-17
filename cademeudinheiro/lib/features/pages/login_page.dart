@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../adm/adm_store.dart';
 import '../../services/firebase_messaging_service.dart';
 import '../../utils/convert_days.dart';
 
@@ -20,6 +21,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   UserInfo _userInfo = UserInfo();
   late UserStore _userStore;
+  late AdmStore _admStore;
   final _name = TextEditingController();
   final _passwd = TextEditingController();
   late MovimentStore _movimentStore;
@@ -46,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     super.didChangeDependencies();
     _userStore = Provider.of<UserStore>(context);
     _movimentStore = Provider.of<MovimentStore>(context);
+    _admStore = Provider.of<AdmStore>(context);
   }
 
   @override
@@ -152,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     if(_userStore.type == 'adm') {
                       Navigator.pushReplacementNamed(context, '/adm_page');
-
+                      await _admStore.getAllUsers();
                     } else {
                       await _movimentStore.setLastMoviments();
 

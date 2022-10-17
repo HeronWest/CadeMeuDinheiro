@@ -25,17 +25,17 @@ class MovimentDao extends BaseDao<MovimentModel> {
     }
   }
 
-  getMoviments({String initialDate = '', String finalDate = ''}) async {
+  getMoviments(int UserId, {String initialDate = '', String finalDate = ''}) async {
     try {
       var dbClient = await db;
       if (initialDate.isNotEmpty && finalDate.isNotEmpty) {
         List<MovimentModel> retur = await query(
-            'SELECT * FROM moviments WHERE data BETWEEN "$initialDate" AND "$finalDate"');
+            'SELECT * FROM moviments WHERE (user_id = "$UserId") AND (data BETWEEN "$initialDate" AND "$finalDate")');
         print('data inicio: $initialDate');
         print('data inicio: $finalDate');
         return retur;
       } else {
-        List<MovimentModel> retur = await query('SELECT * FROM moviments');
+        List<MovimentModel> retur = await query('SELECT * FROM moviments WHERE user_id = "$UserId"');
         return retur;
       }
     } catch (e) {

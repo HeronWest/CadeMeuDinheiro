@@ -1,5 +1,6 @@
 import 'package:cademeudinheiro/features/moviment/moviment_controller.dart';
 import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
+import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:cademeudinheiro/features/widgets/appbar.dart';
 import 'package:cademeudinheiro/features/widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -54,12 +55,14 @@ class _consultPageState extends State<ConsultPage> {
   IconData _icon = Icons.calendar_month_rounded;
 
   late MovimentStore _movimentStore;
+  late UserStore _userStore;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _movimentStore = Provider.of<MovimentStore>(context);
-    _movimentStore.setMoviments();
+    _userStore = Provider.of<UserStore>(context);
+    _movimentStore.setMoviments(_userStore.ID);
   }
 
   @override
@@ -312,7 +315,7 @@ class _consultPageState extends State<ConsultPage> {
                                           _movimentStore
                                               .setMovimentsByType(dropdownID);
                                         } else {
-                                          _movimentStore.setMoviments();
+                                          _movimentStore.setMoviments(_userStore.ID);
                                         }
                                       },
                                       child: const Text(
@@ -349,6 +352,7 @@ class _consultPageState extends State<ConsultPage> {
                                           print('Inicio: $formattedI');
                                           print('Fim: $formattedF');
                                           await _movimentStore.setMoviments(
+                                              _userStore.ID,
                                               initialDate:
                                                   formattedF.toString(),
                                               finalDate: formattedI.toString());
@@ -369,6 +373,7 @@ class _consultPageState extends State<ConsultPage> {
                                           print('Inicio: $formattedI');
                                           print('Fim: $formattedF');
                                           await _movimentStore.setMoviments(
+                                              _userStore.ID,
                                               initialDate:
                                                   formattedF.toString(),
                                               finalDate: formattedI.toString());
@@ -389,6 +394,7 @@ class _consultPageState extends State<ConsultPage> {
                                           print('Inicio: $formattedI');
                                           print('Fim: $formattedF');
                                           await _movimentStore.setMoviments(
+                                              _userStore.ID,
                                               initialDate:
                                                   formattedF.toString(),
                                               finalDate: formattedI.toString());
@@ -419,6 +425,7 @@ class _consultPageState extends State<ConsultPage> {
                                                               context);
                                                           print(_rangeIF);
                                                           _movimentStore.setMoviments(
+                                                              _userStore.ID,
                                                               initialDate:
                                                                   _rangeIF[0]
                                                                       .toString(),

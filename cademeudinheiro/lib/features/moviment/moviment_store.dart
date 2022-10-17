@@ -78,10 +78,9 @@ abstract class _Moviment with Store {
   }
 
   @action
-  setMoviments({String initialDate = '', String finalDate = ''}) async {
+  setMoviments(int? Id, {String initialDate = '', String finalDate = ''}) async {
     load = false;
-    moviments = await _movimentDao.getMoviments(
-        initialDate: initialDate, finalDate: finalDate);
+    moviments = await _movimentDao.getMoviments(Id!, initialDate: initialDate, finalDate: finalDate);
     load = true;
   }
 
