@@ -11,12 +11,12 @@ class AdmDao extends BaseDao<UserModel>{
   String get tableName => "users";
 
   Future<dynamic> searchAllUsers() async {
-    List<UserModel> user = await query("SELECT * FROM users");
+    List<UserModel> user = await query("SELECT * FROM users WHERE type = 'normal'");
     return user;
   }
 
   Future<dynamic> searchUserByName(String name) async {
-    List<UserModel> user = await query("SELECT * FROM users WHERE name = '$name'");
+    List<UserModel> user = await query("SELECT * FROM users WHERE name LIKE '%$name%' and type = 'normal'");
     return user;
   }
 

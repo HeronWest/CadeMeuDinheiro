@@ -13,11 +13,11 @@ class MovimentDao extends BaseDao<MovimentModel> {
   String get tableName => "moviments";
 
 
-  getMovimentsByType(type) async {
+  getMovimentsByType(int UserId, type) async {
     try {
       var dbClient = await db;
       List<MovimentModel> retur =
-          await query('SELECT * FROM moviments WHERE type = "$type"');
+          await query('SELECT * FROM moviments WHERE type = "$type" and (user_id = "$UserId")');
       print('Moviments$retur');
       return retur;
     } catch (e) {
@@ -54,5 +54,27 @@ class MovimentDao extends BaseDao<MovimentModel> {
     }
   }
 
+  updateMoviment(int id, String local, double value, String date, String descri) async {
+    try {
+      await query('UPDATE moviments SET local = ?, value = ?, data = ?, descri = ? WHERE id = ?;',[
+        local,
+        value,
+        date,
+        descri,
+        id
+      ]);
+    } catch(e){
+      print(e);
+    }
+  }
+
+  deleteMoviment(int id) async{
+    try {
+      var dbClient = await db;
+      await query('DELETE FROM moviments WHERE id="$id"');
+    } catch (e) {
+      print(e);
+    }
+  }
 
 }

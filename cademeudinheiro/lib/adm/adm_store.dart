@@ -34,9 +34,16 @@ abstract class _Adm with Store {
 
   @action
   getAllUsers() async {
-    load = true;
-    users = await _admDao.searchAllUsers();
     load = false;
+    users = await _admDao.searchAllUsers();
+    load = true;
   }
+
+  @action
+  getUsersByName(String name) async {
+    load = false;
+    users = await _admDao.searchUserByName(name);
+    load = true;
+}
 
 }

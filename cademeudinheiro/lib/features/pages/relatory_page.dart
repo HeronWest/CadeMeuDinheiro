@@ -174,7 +174,7 @@ class _RelatoryPageState extends State<RelatoryPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _movimentStore = Provider.of<MovimentStore>(context);
-    _movimentStore.setMoviments(_userStore.ID);
+    _movimentStore.setMoviments(_userStore.ID!);
     _userStore = Provider.of<UserStore>(context);
   }
 
@@ -284,7 +284,7 @@ class _RelatoryPageState extends State<RelatoryPage> {
                 List rangeI = _dateControllerI.text.split('/');
                 List rangeF = _dateControllerF.text.split('/');
                 await _movimentStore.setMoviments(
-                    _userStore.ID,
+                    _userStore.ID!,
                     initialDate: DateTime(int.parse(rangeI[2]),
                             int.parse(rangeI[1]), int.parse(rangeI[0]))
                         .toString(),

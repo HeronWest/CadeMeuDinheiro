@@ -23,6 +23,9 @@ abstract class _Moviment with Store {
   bool load = true;
 
   @observable
+  int? idController;
+
+  @observable
   String descriController = '';
 
   @observable
@@ -48,6 +51,9 @@ abstract class _Moviment with Store {
 
   @action
   setLoad() => load = !load;
+
+  @action
+  setIdController(value) => idController = value;
 
   @action
   setDescriController(value) {
@@ -78,16 +84,16 @@ abstract class _Moviment with Store {
   }
 
   @action
-  setMoviments(int? Id, {String initialDate = '', String finalDate = ''}) async {
+  setMoviments(int Id, {String initialDate = '', String finalDate = ''}) async {
     load = false;
-    moviments = await _movimentDao.getMoviments(Id!, initialDate: initialDate, finalDate: finalDate);
+    moviments = await _movimentDao.getMoviments(Id, initialDate: initialDate, finalDate: finalDate);
     load = true;
   }
 
   @action
-  setMovimentsByType(type) async {
+  setMovimentsByType(int id, type) async {
     load = false;
-    moviments = await _movimentDao.getMovimentsByType(type);
+    moviments = await _movimentDao.getMovimentsByType(id, type);
     load = true;
   }
 
@@ -113,6 +119,11 @@ abstract class _Moviment with Store {
   }
 
   @action
+  deleteMoviment(int movimentId) async {
+    await _movimentDao.deleteMoviment(movimentId);
+  }
+
+  @action
   getData() {
     data = [
       _ConsumData('${days[7]}', lastMoviments[7]),
@@ -125,6 +136,10 @@ abstract class _Moviment with Store {
       _ConsumData('Hoje', lastMoviments[0])
     ];
   }
+@action
+updateMoviment(int id, String local, double value, String date, String descri) async {
+  await _movimentDao.updateMoviment(id, local, value, date, descri);
+}
 }
 
 class _ConsumData {

@@ -93,6 +93,14 @@ mixin _$AdmStore on _Adm, Store {
     return _$getAllUsersAsyncAction.run(() => super.getAllUsers());
   }
 
+  late final _$getUsersByNameAsyncAction =
+      AsyncAction('_Adm.getUsersByName', context: context);
+
+  @override
+  Future getUsersByName(String name) {
+    return _$getUsersByNameAsyncAction.run(() => super.getUsersByName(name));
+  }
+
   late final _$_AdmActionController =
       ActionController(name: '_Adm', context: context);
 

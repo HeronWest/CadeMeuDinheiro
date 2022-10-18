@@ -62,7 +62,7 @@ class _consultPageState extends State<ConsultPage> {
     super.didChangeDependencies();
     _movimentStore = Provider.of<MovimentStore>(context);
     _userStore = Provider.of<UserStore>(context);
-    _movimentStore.setMoviments(_userStore.ID);
+    _movimentStore.setMoviments(_userStore.ID!);
   }
 
   @override
@@ -174,7 +174,7 @@ class _consultPageState extends State<ConsultPage> {
                                             DataCell(SizedBox(
                                               width: screenSize.width * 0.25,
                                               child: Text(
-                                                  '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_movimentStore.moviments[index].date!))}'),
+                                                  '${DateFormat('dd-MM-yyyy').format(DateTime.parse(_movimentStore.moviments[index].date!)).replaceAll('-', '/')}'),
                                             )),
                                             DataCell(SizedBox(
                                               width: screenSize.width * 0.2,
@@ -246,57 +246,7 @@ class _consultPageState extends State<ConsultPage> {
                                     ),
                                   ),
                                 ),
-                                // Container(
-                                //   margin: EdgeInsets.only(
-                                //     right: screenSize.width * 0.05,
-                                //   ),
-                                //   width: screenSize.width * 0.20,
-                                //   height: screenSize.height * 0.07,
-                                //   child: TextFormField(
-                                //     controller: _valueController,
-                                //     style: const TextStyle(
-                                //         color: Color.fromARGB(255, 0, 194, 184)),
-                                //     decoration: const InputDecoration(
-                                //         isDense: true,
-                                //         labelText: 'Valor',
-                                //         labelStyle: TextStyle(
-                                //             fontSize: 14, color: Colors.black54),
-                                //         enabledBorder: UnderlineInputBorder(
-                                //             borderSide: BorderSide(
-                                //                 color: Color.fromARGB(
-                                //                     255, 0, 194, 184))),
-                                //         border: UnderlineInputBorder(
-                                //             borderSide: BorderSide(
-                                //                 color: Color.fromARGB(
-                                //                     255, 0, 194, 184)))),
-                                //   ),
-                                // ),
-                                // Container(
-                                //   width: screenSize.width * 0.2,
-                                //   height: screenSize.height * 0.07,
-                                //   child: TextFormField(
-                                //     controller: _dateController,
-                                //     inputFormatters: [
-                                //       FilteringTextInputFormatter.digitsOnly,
-                                //       DataInputFormatter(),
-                                //     ],
-                                //     style: const TextStyle(
-                                //         color: Color.fromARGB(255, 0, 194, 184)),
-                                //     decoration: const InputDecoration(
-                                //         isDense: true,
-                                //         labelText: 'Data',
-                                //         labelStyle: TextStyle(
-                                //             fontSize: 14, color: Colors.black54),
-                                //         enabledBorder: UnderlineInputBorder(
-                                //             borderSide: BorderSide(
-                                //                 color: Color.fromARGB(
-                                //                     255, 0, 194, 184))),
-                                //         border: UnderlineInputBorder(
-                                //             borderSide: BorderSide(
-                                //                 color: Color.fromARGB(
-                                //                     255, 0, 194, 184)))),
-                                //   ),
-                                // )
+
                                 Container(
                                     margin: EdgeInsets.only(top: 8),
                                     width: screenSize.width * 0.5,
@@ -313,9 +263,9 @@ class _consultPageState extends State<ConsultPage> {
                                       onPressed: () {
                                         if (dropdownValue != 'Ambos') {
                                           _movimentStore
-                                              .setMovimentsByType(dropdownID);
+                                              .setMovimentsByType(_userStore.ID!, dropdownID);
                                         } else {
-                                          _movimentStore.setMoviments(_userStore.ID);
+                                          _movimentStore.setMoviments(_userStore.ID!);
                                         }
                                       },
                                       child: const Text(
@@ -352,7 +302,7 @@ class _consultPageState extends State<ConsultPage> {
                                           print('Inicio: $formattedI');
                                           print('Fim: $formattedF');
                                           await _movimentStore.setMoviments(
-                                              _userStore.ID,
+                                              _userStore.ID!,
                                               initialDate:
                                                   formattedF.toString(),
                                               finalDate: formattedI.toString());
@@ -373,7 +323,7 @@ class _consultPageState extends State<ConsultPage> {
                                           print('Inicio: $formattedI');
                                           print('Fim: $formattedF');
                                           await _movimentStore.setMoviments(
-                                              _userStore.ID,
+                                              _userStore.ID!,
                                               initialDate:
                                                   formattedF.toString(),
                                               finalDate: formattedI.toString());
@@ -394,7 +344,7 @@ class _consultPageState extends State<ConsultPage> {
                                           print('Inicio: $formattedI');
                                           print('Fim: $formattedF');
                                           await _movimentStore.setMoviments(
-                                              _userStore.ID,
+                                              _userStore.ID!,
                                               initialDate:
                                                   formattedF.toString(),
                                               finalDate: formattedI.toString());
@@ -425,7 +375,7 @@ class _consultPageState extends State<ConsultPage> {
                                                               context);
                                                           print(_rangeIF);
                                                           _movimentStore.setMoviments(
-                                                              _userStore.ID,
+                                                              _userStore.ID!,
                                                               initialDate:
                                                                   _rangeIF[0]
                                                                       .toString(),

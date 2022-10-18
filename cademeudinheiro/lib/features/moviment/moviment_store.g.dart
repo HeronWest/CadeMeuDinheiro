@@ -56,6 +56,22 @@ mixin _$MovimentStore on _Moviment, Store {
     });
   }
 
+  late final _$idControllerAtom =
+      Atom(name: '_Moviment.idController', context: context);
+
+  @override
+  int? get idController {
+    _$idControllerAtom.reportRead();
+    return super.idController;
+  }
+
+  @override
+  set idController(int? value) {
+    _$idControllerAtom.reportWrite(value, super.idController, () {
+      super.idController = value;
+    });
+  }
+
   late final _$descriControllerAtom =
       Atom(name: '_Moviment.descriController', context: context);
 
@@ -154,7 +170,7 @@ mixin _$MovimentStore on _Moviment, Store {
       AsyncAction('_Moviment.setMoviments', context: context);
 
   @override
-  Future setMoviments(int? Id,
+  Future setMoviments(int Id,
       {String initialDate = '', String finalDate = ''}) {
     return _$setMovimentsAsyncAction.run(() =>
         super.setMoviments(Id, initialDate: initialDate, finalDate: finalDate));
@@ -164,9 +180,9 @@ mixin _$MovimentStore on _Moviment, Store {
       AsyncAction('_Moviment.setMovimentsByType', context: context);
 
   @override
-  Future setMovimentsByType(dynamic type) {
+  Future setMovimentsByType(int id, dynamic type) {
     return _$setMovimentsByTypeAsyncAction
-        .run(() => super.setMovimentsByType(type));
+        .run(() => super.setMovimentsByType(id, type));
   }
 
   late final _$setLastMovimentsAsyncAction =
@@ -175,6 +191,25 @@ mixin _$MovimentStore on _Moviment, Store {
   @override
   Future setLastMoviments() {
     return _$setLastMovimentsAsyncAction.run(() => super.setLastMoviments());
+  }
+
+  late final _$deleteMovimentAsyncAction =
+      AsyncAction('_Moviment.deleteMoviment', context: context);
+
+  @override
+  Future deleteMoviment(int movimentId) {
+    return _$deleteMovimentAsyncAction
+        .run(() => super.deleteMoviment(movimentId));
+  }
+
+  late final _$updateMovimentAsyncAction =
+      AsyncAction('_Moviment.updateMoviment', context: context);
+
+  @override
+  Future updateMoviment(
+      int id, String local, double value, String date, String descri) {
+    return _$updateMovimentAsyncAction
+        .run(() => super.updateMoviment(id, local, value, date, descri));
   }
 
   late final _$_MovimentActionController =
@@ -208,6 +243,17 @@ mixin _$MovimentStore on _Moviment, Store {
         _$_MovimentActionController.startAction(name: '_Moviment.setLoad');
     try {
       return super.setLoad();
+    } finally {
+      _$_MovimentActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setIdController(dynamic value) {
+    final _$actionInfo = _$_MovimentActionController.startAction(
+        name: '_Moviment.setIdController');
+    try {
+      return super.setIdController(value);
     } finally {
       _$_MovimentActionController.endAction(_$actionInfo);
     }
@@ -285,6 +331,7 @@ mixin _$MovimentStore on _Moviment, Store {
 moviments: ${moviments},
 lastMoviments: ${lastMoviments},
 load: ${load},
+idController: ${idController},
 descriController: ${descriController},
 valueController: ${valueController},
 localController: ${localController},
