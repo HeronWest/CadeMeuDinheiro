@@ -8,5 +8,8 @@ class UserController{
 
   Future<Database?> get db => DatabaseHelper.getInstance().db;
 
- 
+  setSald(double sald, int id) async {
+    var dbClient = await db;
+    await dbClient!.rawQuery('UPDATE users SET sald = "$sald" WHERE id = "$id"');
+  }
 }

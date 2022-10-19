@@ -1,3 +1,4 @@
+import 'package:cademeudinheiro/adm/adm_controller.dart';
 import 'package:cademeudinheiro/features/moviment/moviment_controller.dart';
 import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
@@ -11,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../adm/adm_store.dart';
+import '../widgets/alerts_dialogs.dart';
 
 class AdmConsultPage extends StatefulWidget {
   const AdmConsultPage({super.key});
@@ -20,27 +22,8 @@ class AdmConsultPage extends StatefulWidget {
 }
 
 class _consultPageState extends State<AdmConsultPage> {
-  String _selectedDate = '';
-  String _dateCount = '';
-  String _range = '';
-  String _rangeCount = '';
-  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-    setState(() {
-      if (args.value is PickerDateRange) {
-        _range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)} -'
-        // ignore: lines_longer_than_80_chars
-            ' ${DateFormat('yyyy-MM-dd').format(args.value.endDate ?? args.value.startDate)}';
-      } else if (args.value is DateTime) {
-        _selectedDate = args.value.toString();
-      } else if (args.value is List<DateTime>) {
-        _dateCount = args.value.length.toString();
-      } else {
-        _rangeCount = args.value.length.toString();
-      }
-      print('$_range');
-    });
-  }
 
+  final AdmController _admController = AdmController();
   final MovimentController _movimentController = MovimentController();
   final _valueController = TextEditingController();
   final _localController = TextEditingController();
@@ -55,9 +38,15 @@ class _consultPageState extends State<AdmConsultPage> {
   bool _sortAsc = true;
   int? _sortColumnIndex;
   IconData _icon = Icons.calendar_month_rounded;
+  String _selectedDate = '';
+  String _dateCount = '';
+  String _range = '';
+  String _rangeCount = '';
 
   late MovimentStore _movimentStore;
   late AdmStore _admStore;
+
+  AlertDialogs _alertDialogs = AlertDialogs()..confirmation = false;
 
   @override
   void didChangeDependencies() {
@@ -101,16 +90,11 @@ class _consultPageState extends State<AdmConsultPage> {
                                 onSort: (columnIndex, sortAscending) {
                                   setState(() {
                                     _sortAsc = sortAscending;
-
                                     _sortColumnIndex = columnIndex;
 
                                     sortAscending
-                                        ? _movimentStore.moviments.sort(
-                                            (a, b) => a.date!
-                                            .compareTo(b.date!))
-                                        : _movimentStore.moviments.sort(
-                                            (b, a) => a.date!
-                                            .compareTo(b.date!));
+                                        ? _movimentStore.moviments.sort((a, b) => a.date!.compareTo(b.date!))
+                                        : _movimentStore.moviments.sort((b, a) => a.date!.compareTo(b.date!));
                                   });
                                 },
                               ),
@@ -119,16 +103,11 @@ class _consultPageState extends State<AdmConsultPage> {
                                 onSort: (columnIndex, sortAscending) {
                                   setState(() {
                                     _sortAsc = sortAscending;
-
                                     _sortColumnIndex = columnIndex;
 
                                     sortAscending
-                                        ? _movimentStore.moviments.sort(
-                                            (a, b) => a.local!
-                                            .compareTo(b.local!))
-                                        : _movimentStore.moviments.sort(
-                                            (b, a) => a.local!
-                                            .compareTo(b.local!));
+                                        ? _movimentStore.moviments.sort((a, b) => a.local!.compareTo(b.local!))
+                                        : _movimentStore.moviments.sort((b, a) => a.local!.compareTo(b.local!));
                                   });
                                 },
                               ),
@@ -141,12 +120,8 @@ class _consultPageState extends State<AdmConsultPage> {
                                     _sortColumnIndex = columnIndex;
 
                                     sortAscending
-                                        ? _movimentStore.moviments.sort(
-                                            (a, b) => a.value!
-                                            .compareTo(b.value!))
-                                        : _movimentStore.moviments.sort(
-                                            (b, a) => a.value!
-                                            .compareTo(b.value!));
+                                        ? _movimentStore.moviments.sort((a, b) => a.value!.compareTo(b.value!))
+                                        : _movimentStore.moviments.sort((b, a) => a.value!.compareTo(b.value!));
                                   });
                                 },
                               ),
@@ -159,12 +134,8 @@ class _consultPageState extends State<AdmConsultPage> {
                                     _sortColumnIndex = columnIndex;
 
                                     sortAscending
-                                        ? _movimentStore.moviments.sort(
-                                            (a, b) => a.type!
-                                            .compareTo(b.type!))
-                                        : _movimentStore.moviments.sort(
-                                            (b, a) => a.type!
-                                            .compareTo(b.type!));
+                                        ? _movimentStore.moviments.sort((a, b) => a.type!.compareTo(b.type!))
+                                        : _movimentStore.moviments.sort((b, a) => a.type!.compareTo(b.type!));
                                   });
                                 },
                               ),
@@ -283,12 +254,48 @@ class _consultPageState extends State<AdmConsultPage> {
                         ],
                       ),
                     ),
+
                     Container(
                       padding: EdgeInsets.only(top: 4),
                       width: screenSize.width * 0.9,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: SpeedDial(
+                              elevation: 6,
+                              backgroundColor: Color.fromARGB(255, 0, 194, 184),
+                              icon: Icons.construction,
+                              children: [
+                                SpeedDialChild(
+                                  label: 'Nova movimentação',
+                                  child: Icon(Icons.plus_one),
+                                  onTap: () => Navigator.pushNamed(context, '/add_mov_page')
+                                ),
+                                SpeedDialChild(
+                                    label: 'Excluir usuário',
+                                    child: Icon(Icons.cancel),
+                                    onTap: () async {
+                                    await _alertDialogs.showConfirmUserExclusion(context);
+                                    if(_alertDialogs.confirmation!) {
+                                      await _admController.deleteUser(_admStore.userFilterId!);
+                                      await _admStore.getAllUsers();
+                                      await Navigator.pushNamedAndRemoveUntil(context, '/adm_page', (Route<dynamic> route) => false);
+
+                                    }
+                                    _alertDialogs.confirmation = false;
+                                    }
+
+                                ),
+                                SpeedDialChild(
+                                    label: 'Config. Usuário',
+                                    child: Icon(Icons.manage_accounts),
+                                    onTap: () {}
+                                ),
+                              ],
+                            ),
+                          ),
                           SpeedDial(
                             elevation: 6,
                             icon: _icon,
@@ -298,20 +305,14 @@ class _consultPageState extends State<AdmConsultPage> {
                               SpeedDialChild(
                                   onTap: () async {
                                     var now = DateTime.now();
-                                    var last =
-                                    now.subtract(Duration(days: 7));
-                                    var formattedI =
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(now);
-                                    var formattedF =
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(last);
+                                    var last = now.subtract(Duration(days: 7));
+                                    var formattedI = DateFormat('yyyy-MM-dd').format(now);
+                                    var formattedF = DateFormat('yyyy-MM-dd').format(last);
                                     print('Inicio: $formattedI');
                                     print('Fim: $formattedF');
                                     await _movimentStore.setMoviments(
                                         _admStore.userFilterId!,
-                                        initialDate:
-                                        formattedF.toString(),
+                                        initialDate: formattedF.toString(),
                                         finalDate: formattedI.toString());
                                   },
                                   label: '7 Dias',
@@ -319,20 +320,14 @@ class _consultPageState extends State<AdmConsultPage> {
                               SpeedDialChild(
                                   onTap: () async {
                                     var now = DateTime.now();
-                                    var last =
-                                    now.subtract(Duration(days: 15));
-                                    var formattedI =
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(now);
-                                    var formattedF =
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(last);
+                                    var last = now.subtract(Duration(days: 15));
+                                    var formattedI = DateFormat('yyyy-MM-dd').format(now);
+                                    var formattedF = DateFormat('yyyy-MM-dd').format(last);
                                     print('Inicio: $formattedI');
                                     print('Fim: $formattedF');
                                     await _movimentStore.setMoviments(
                                         _admStore.userFilterId!,
-                                        initialDate:
-                                        formattedF.toString(),
+                                        initialDate: formattedF.toString(),
                                         finalDate: formattedI.toString());
                                   },
                                   label: '15 Dias',
@@ -340,20 +335,14 @@ class _consultPageState extends State<AdmConsultPage> {
                               SpeedDialChild(
                                   onTap: () async {
                                     var now = DateTime.now();
-                                    var last =
-                                    now.subtract(Duration(days: 30));
-                                    var formattedI =
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(now);
-                                    var formattedF =
-                                    DateFormat('yyyy-MM-dd')
-                                        .format(last);
+                                    var last = now.subtract(Duration(days: 30));
+                                    var formattedI = DateFormat('yyyy-MM-dd').format(now);
+                                    var formattedF = DateFormat('yyyy-MM-dd').format(last);
                                     print('Inicio: $formattedI');
                                     print('Fim: $formattedF');
                                     await _movimentStore.setMoviments(
                                         _admStore.userFilterId!,
-                                        initialDate:
-                                        formattedF.toString(),
+                                        initialDate: formattedF.toString(),
                                         finalDate: formattedI.toString());
                                   },
                                   label: '30 Dias',
@@ -365,35 +354,22 @@ class _consultPageState extends State<AdmConsultPage> {
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             content: Container(
-                                                width: screenSize.width *
-                                                    0.7,
-                                                height: screenSize.width *
-                                                    0.7,
+                                                width: screenSize.width * 0.7,
+                                                height: screenSize.width * 0.7,
                                                 child: SfDateRangePicker(
                                                   showActionButtons: true,
-                                                  onCancel: () {
-                                                    Navigator.pop(
-                                                        context);
-                                                  },
+                                                  onCancel: () => Navigator.pop(context),
                                                   onSubmit: (a) {
-                                                    List _rangeIF = _range
-                                                        .split(" - ");
-                                                    Navigator.pop(
-                                                        context);
+                                                    List _rangeIF = _range.split(" - ");
+                                                    Navigator.pop(context);
                                                     print(_rangeIF);
                                                     _movimentStore.setMoviments(
                                                         _admStore.userFilterId!,
-                                                        initialDate:
-                                                        _rangeIF[0]
-                                                            .toString(),
-                                                        finalDate: _rangeIF[
-                                                        1]
-                                                            .toString());
+                                                        initialDate: _rangeIF[0].toString(),
+                                                        finalDate: _rangeIF[1].toString());
                                                   },
-                                                  onSelectionChanged:
-                                                  _onSelectionChanged,
-                                                  selectionMode:
-                                                  DateRangePickerSelectionMode
+                                                  onSelectionChanged: _onSelectionChanged,
+                                                  selectionMode: DateRangePickerSelectionMode
                                                       .range,
                                                 )),
                                           );
@@ -403,6 +379,7 @@ class _consultPageState extends State<AdmConsultPage> {
                                   child: Icon(Icons.calendar_today)),
                             ],
                           ),
+
                         ],
                       ),
                     )
@@ -414,4 +391,20 @@ class _consultPageState extends State<AdmConsultPage> {
       ),
     );
   }
+    void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+      setState(() {
+        if (args.value is PickerDateRange) {
+          _range = '${DateFormat('yyyy-MM-dd').format(args.value.startDate)} -'
+          // ignore: lines_longer_than_80_chars
+              ' ${DateFormat('yyyy-MM-dd').format(args.value.endDate ?? args.value.startDate)}';
+        } else if (args.value is DateTime) {
+          _selectedDate = args.value.toString();
+        } else if (args.value is List<DateTime>) {
+          _dateCount = args.value.length.toString();
+        } else {
+          _rangeCount = args.value.length.toString();
+        }
+        print('$_range');
+      });
+    }
 }

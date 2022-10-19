@@ -54,18 +54,18 @@ mixin _$AdmStore on _Adm, Store {
     });
   }
 
-  late final _$idFilterAtom = Atom(name: '_Adm.idFilter', context: context);
+  late final _$idAtom = Atom(name: '_Adm.id', context: context);
 
   @override
-  int? get idFilter {
-    _$idFilterAtom.reportRead();
-    return super.idFilter;
+  int? get id {
+    _$idAtom.reportRead();
+    return super.id;
   }
 
   @override
-  set idFilter(int? value) {
-    _$idFilterAtom.reportWrite(value, super.idFilter, () {
-      super.idFilter = value;
+  set id(int? value) {
+    _$idAtom.reportWrite(value, super.id, () {
+      super.id = value;
     });
   }
 
@@ -116,11 +116,10 @@ mixin _$AdmStore on _Adm, Store {
   }
 
   @override
-  dynamic setIdFilter(dynamic value) {
-    final _$actionInfo =
-        _$_AdmActionController.startAction(name: '_Adm.setIdFilter');
+  dynamic setId(dynamic value) {
+    final _$actionInfo = _$_AdmActionController.startAction(name: '_Adm.setId');
     try {
-      return super.setIdFilter(value);
+      return super.setId(value);
     } finally {
       _$_AdmActionController.endAction(_$actionInfo);
     }
@@ -143,7 +142,7 @@ mixin _$AdmStore on _Adm, Store {
 users: ${users},
 load: ${load},
 nameFilter: ${nameFilter},
-idFilter: ${idFilter},
+id: ${id},
 userFilterId: ${userFilterId}
     ''';
   }

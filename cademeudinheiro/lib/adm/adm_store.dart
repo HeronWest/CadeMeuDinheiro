@@ -1,3 +1,4 @@
+import 'package:cademeudinheiro/adm/adm_controller.dart';
 import 'package:cademeudinheiro/adm/adm_dao.dart';
 import 'package:mobx/mobx.dart';
 import '../features/user/user_model.dart';
@@ -7,6 +8,7 @@ class AdmStore = _Adm with _$AdmStore;
 
 abstract class _Adm with Store {
   AdmDao _admDao = AdmDao();
+  AdmController _admController = AdmController();
 
   @observable
   List<UserModel> users = [];
@@ -18,7 +20,7 @@ abstract class _Adm with Store {
   String nameFilter = '';
 
   @observable
-  int? idFilter;
+  int? id;
 
   @observable
   int? userFilterId;
@@ -27,7 +29,7 @@ abstract class _Adm with Store {
   setNameFilter(String value) => nameFilter = value;
 
   @action
-  setIdFilter(value) => idFilter = value;
+  setId(value) => id = value;
 
   @action
   setUserFilterId(value) => userFilterId = value;

@@ -2,6 +2,7 @@ import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
 import 'package:cademeudinheiro/features/user/log_user.dart';
 import 'package:cademeudinheiro/features/user/user_info.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
+import 'package:cademeudinheiro/features/widgets/alerts_dialogs.dart';
 import 'package:cademeudinheiro/services/nottification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   UserInfo _userInfo = UserInfo();
   late UserStore _userStore;
   late AdmStore _admStore;
+  AlertDialogs _alertDialogs = AlertDialogs();
   final _name = TextEditingController();
   final _passwd = TextEditingController();
   late MovimentStore _movimentStore;
@@ -120,46 +122,24 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: (() async {
                   _userInfo = await conectUser(_name.text, _passwd.text);
                   if (_userInfo.logged == false) {
-                    return showDialog<void>(
-                        context: context,
-                        barrierDismissible: false, // user must tap button!
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Erro'),
-                            content: SingleChildScrollView(
-                              child: ListBody(
-                                children: const <Widget>[
-                                  Text(
-                                      'Login ou Senha incorretos\nFavor verifique suas informações'),
-                                ],
-                              ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('OK!'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        });
+                    _alertDialogs.showLoginFailedAlert(context);
                   } else {
-                    _userStore.setID(_userInfo.userId!);
-                    _userStore.setNick(_userInfo.userNick!);
-                    _userStore.setEmail(_userInfo.userEmail!);
-                    _userStore.setSald(_userInfo.userSald!);
-                    _userStore.setMinim(_userInfo.userMinim!);
-                    _userStore.setPasswd(_userInfo.userPasswd!);
                     _userStore.setType(_userInfo.userType!);
 
                     if(_userStore.type == 'adm') {
                       Navigator.pushReplacementNamed(context, '/adm_page');
+                      _admStore.setId(_userInfo.userId);
                       await _admStore.getAllUsers();
                     } else {
                       await _movimentStore.setLastMoviments();
+                        _userStore.setID(_userInfo.userId!);
+                        _userStore.setNick(_userInfo.userNick!);
+                        _userStore.setEmail(_userInfo.userEmail!);
+                        _userStore.setSald(_userInfo.userSald!);
+                        _userStore.setMinim(_userInfo.userMinim!);
+                        _userStore.setPasswd(_userInfo.userPasswd!);
 
-                      Navigator.pushReplacementNamed(context, '/home_page');
+                        Navigator.pushReplacementNamed(context, '/home_page');
                     }
                   }
                   _name.text = '';

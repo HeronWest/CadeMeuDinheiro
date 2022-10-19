@@ -2,6 +2,7 @@ import 'package:cademeudinheiro/features/pages/adm_consult_page.dart';
 import 'package:cademeudinheiro/features/pages/edit_mov_page.dart';
 import 'package:cademeudinheiro/features/pages/precons_page.dart';
 import 'package:cademeudinheiro/features/pages/relatory_page.dart';
+import '../features/pages/add_mov_page.dart';
 import '../features/pages/adm_page.dart';
 import '../features/pages/conf_page.dart';
 import '../features/pages/cad_page.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const relatory_page = '/relatory_page';
   static const adm_consult_page = '/adm_consult_page';
   static const edit_mov_page = '/edit_mov_page';
+  static const add_mov_page = '/add_mov_page';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     login_page: (BuildContext context) => LoginPage(),
@@ -37,6 +39,7 @@ class Routes {
     relatory_page: (BuildContext context) => RelatoryPage(),
     adm_consult_page: (BuildContext context) => AdmConsultPage(),
     edit_mov_page: (BuildContext context) => EditMovPage(),
+    add_mov_page: (BuildContext context) => AddMovPage(),
   };
 
   static GlobalKey<NavigatorState>? navigatorKey = GlobalKey<NavigatorState>();

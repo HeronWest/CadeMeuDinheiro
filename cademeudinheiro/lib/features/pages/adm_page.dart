@@ -137,10 +137,8 @@ class _AdmPageState extends State<AdmPage> {
                                 ),
                                 onTap: () async {
                                   print(index);
-                                  await _movimentStore.setMoviments(
-                                      _admStore.users[index].id!);
-                                  await _admStore.setUserFilterId(
-                                      _admStore.users[index].id);
+                                  await _movimentStore.setMoviments(_admStore.users[index].id!);
+                                  await _admStore.setUserFilterId(_admStore.users[index].id);
                                   Navigator.pushNamed(
                                       context, '/adm_consult_page');
                                   print(_movimentStore.moviments);

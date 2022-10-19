@@ -1,8 +1,8 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:cademeudinheiro/adm/adm_controller.dart';
 import 'package:cademeudinheiro/features/moviment/moviment_store.dart';
 import 'package:cademeudinheiro/features/widgets/appbar.dart';
 import 'package:cademeudinheiro/features/widgets/drawer.dart';
-import 'package:cademeudinheiro/features/moviment/reg_mov.dart';
 import 'package:cademeudinheiro/features/user/user_store.dart';
 import 'package:cademeudinheiro/services/firebase_messaging_service.dart';
 import 'package:cademeudinheiro/services/nottification_service.dart';
@@ -24,8 +24,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _homeState extends State<HomePage> {
+
   late UserStore _userStore;
   late MovimentStore _movimentStore;
+  AdmController _admController = AdmController();
 
   @override
   void didChangeDependencies() {
@@ -253,11 +255,11 @@ class _homeState extends State<HomePage> {
                                   var outputDate =
                                       outputFormat.format(inputDate);
 
-                                  await registerMoviment(
+                                  await _admController.registerMoviment(
+                                      _userStore.ID!,
                                       _userStore.ID!,
                                       _movimentStore.localController,
-                                      double.parse(
-                                          _movimentStore.valueController),
+                                      double.parse(_movimentStore.valueController),
                                       _movimentStore.descriController,
                                       outputDate.replaceAll('/', '-'),
                                       'OUT');
@@ -280,9 +282,7 @@ class _homeState extends State<HomePage> {
                             width: screenSize.width * 0.3,
                             height: screenSize.width * 0.1,
                             child: IconButton(
-                                icon: Icon(
-                                  Icons.add,
-                                ),
+                                icon: Icon(Icons.add),
                                 onPressed: (() async {
                                   var inputFormat = DateFormat('dd/MM/yyyy');
                                   var inputDate = inputFormat.parse(
@@ -291,17 +291,16 @@ class _homeState extends State<HomePage> {
                                   var outputFormat = DateFormat('yyyy/MM/dd');
                                   var outputDate =
                                       outputFormat.format(inputDate);
-                                  await registerMoviment(
+                                  await _admController.registerMoviment(
+                                      _userStore.ID!,
                                       _userStore.ID!,
                                       _movimentStore.localController,
-                                      double.parse(
-                                          _movimentStore.valueController),
+                                      double.parse(_movimentStore.valueController),
                                       _movimentStore.descriController,
                                       outputDate.replaceAll('/', '-'),
                                       'IN');
-                                  _userStore.setSald(_userStore.sald! +
-                                      double.parse(
-                                          _movimentStore.valueController));
+
+                                  _userStore.setSald(_userStore.sald! + double.parse(_movimentStore.valueController));
                                   await _movimentStore.setLastMoviments();
                                   _movimentStore.cleanControllers();
                                 })),

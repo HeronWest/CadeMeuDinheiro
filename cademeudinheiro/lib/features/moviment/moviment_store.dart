@@ -23,6 +23,9 @@ abstract class _Moviment with Store {
   bool load = true;
 
   @observable
+  bool switchController = false;
+
+  @observable
   int? idController;
 
   @observable
@@ -51,6 +54,9 @@ abstract class _Moviment with Store {
 
   @action
   setLoad() => load = !load;
+
+  @action
+  setSwitchController() => switchController = !switchController;
 
   @action
   setIdController(value) => idController = value;

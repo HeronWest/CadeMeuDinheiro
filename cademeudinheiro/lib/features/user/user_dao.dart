@@ -18,8 +18,13 @@ class UserDao extends BaseDao<UserModel> {
 
   Future<dynamic> searchUserByID(id) async {
     List<UserModel> user = await query("SELECT * FROM users WHERE id = '$id'");
-
     return user;
   }
-  
+
+  getSald(int id) async {
+    List<UserModel> user = await query('SELECT * FROM users WHERE id = "$id"');
+    print(user[0].sald);
+    return user[0].sald;
+  }
+
 }

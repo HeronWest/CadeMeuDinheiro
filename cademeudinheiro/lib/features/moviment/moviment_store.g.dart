@@ -56,6 +56,22 @@ mixin _$MovimentStore on _Moviment, Store {
     });
   }
 
+  late final _$switchControllerAtom =
+      Atom(name: '_Moviment.switchController', context: context);
+
+  @override
+  bool get switchController {
+    _$switchControllerAtom.reportRead();
+    return super.switchController;
+  }
+
+  @override
+  set switchController(bool value) {
+    _$switchControllerAtom.reportWrite(value, super.switchController, () {
+      super.switchController = value;
+    });
+  }
+
   late final _$idControllerAtom =
       Atom(name: '_Moviment.idController', context: context);
 
@@ -249,6 +265,17 @@ mixin _$MovimentStore on _Moviment, Store {
   }
 
   @override
+  dynamic setSwitchController() {
+    final _$actionInfo = _$_MovimentActionController.startAction(
+        name: '_Moviment.setSwitchController');
+    try {
+      return super.setSwitchController();
+    } finally {
+      _$_MovimentActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setIdController(dynamic value) {
     final _$actionInfo = _$_MovimentActionController.startAction(
         name: '_Moviment.setIdController');
@@ -331,6 +358,7 @@ mixin _$MovimentStore on _Moviment, Store {
 moviments: ${moviments},
 lastMoviments: ${lastMoviments},
 load: ${load},
+switchController: ${switchController},
 idController: ${idController},
 descriController: ${descriController},
 valueController: ${valueController},
